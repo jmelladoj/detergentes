@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\LogStockRegistro;
 use Illuminate\Http\Request;
 use App\Producto;
 use App\Sucursal;
@@ -100,5 +101,29 @@ class ProductoController extends Controller
         if (!$request->ajax()) return redirect('/');
         
         Producto::withTrashed()->find($request->id)->restore();
+    }
+
+    public function ingresoStockManual(Request $request){
+        if (!$request->ajax()) return redirect('/');
+
+        $detalle_stock = json_decode($request->detalle_stock);
+        $total_stock = 0;
+
+        foreach($detalle_stock AS $item){
+            $stock = StockSucursal::firstOrNew(
+                ['producto_id' => $request->producto_id , 'sucursal_id' =>  $item->sucursal_id]
+            );
+
+            $stock->stock += $item->stock;
+            $stock->save();
+
+            $total_stock += $item->stock;
+        }
+
+        $producto = Producto::find($request->producto_id);
+        $producto->stock += $total_stock;
+        $producto->save();
+
+        LogStockRegistro::create(['mensaje' => \Auth::user()->name . ' ha ingresado ' . $total_stock . ' productos a ' . $producto->nombre]);
     }
 }

@@ -64,6 +64,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/producto/actualizar', 'ProductoController@actualizarProducto');
     Route::post('/producto/eliminar', 'ProductoController@eliminarProducto');
     Route::post('/producto/restaurar', 'ProductoController@restaurarProducto');
+    Route::post('/producto/ingreso/stock', 'ProductoController@ingresoStockManual');
 
     //Rutas de stock sucursales
     Route::get('/stockSucursal', 'StockSucursalController@index');
@@ -115,6 +116,9 @@ Route::middleware(['auth'])->group(function () {
 
     //Rutas de resumen
     Route::get('/resumen', 'HomeController@resumen');
+
+    //Rutas de log
+    Route::get('/logs', 'LogStockController@index');
 
 });
 

@@ -61,3 +61,7 @@
 <template v-if="menu==15">
     <pendientes></pendientes>
 </template>
+
+<template v-if="menu==16">
+    <stock-manual></stock-manual>
+</template>

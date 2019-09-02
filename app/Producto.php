@@ -12,5 +12,8 @@ class Producto extends Model
     
     use SoftDeletes;
 
+    protected $fillable = ['id', 'stock'];
+
+
     protected $dates = ['deleted_at'];
 }

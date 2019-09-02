@@ -34,7 +34,8 @@ Vue.component('venta-normal', require('./components/VentaNormal.vue').default);
 Vue.component('detalle-ventas', require('./components/Ventas.vue').default);
 Vue.component('dashboard', require('./components/Dashboard.vue').default);
 Vue.component('pendientes', require('./components/Pendientes.vue').default);
-Vue.component('venta-premium', require('./components/VentaPremium'));
+//Vue.component('venta-premium', require('./components/VentaPremium'));
+Vue.component('stock-manual', require('./components/StockManual.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -46,7 +47,7 @@ Vue.component('venta-premium', require('./components/VentaPremium'));
 const app = new Vue({
     el: '#app',
     data :{
-        menu : 0
+        menu : 16
     }
 });
 

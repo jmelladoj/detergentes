@@ -13,6 +13,7 @@
                     <ul aria-expanded="false" class="collapse">
                         <li @click="menu=3"><a href="javascript:void(0)">CATEGORÍAS</a></li>
                         <li @click="menu=4"><a href="javascript:void(0)">PRODUCTOS</a></li>
+                        <li @click="menu=16"><a href="javascript:void(0)"> STOCK MANUAL</a></li>
                     </ul>
                 </li>
 
