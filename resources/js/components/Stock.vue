@@ -212,14 +212,14 @@ import { log } from 'util';
                 let informe = [];
                 
                 me.productos.forEach(function(p) {
-                    var fila = new Object();
-
                     me.sucursales.forEach(function(s) {
+                        var fila = new Object();
+                        
                         fila.NUM = p.id;
                         fila.NOMBRE = p.nombre.toUpperCase();
                         fila.TOTAL = p.stock;
                         fila.SUCURSALES = s.nombre.toUpperCase();
-                        fila.STOCK = s.stock;
+                        fila.STOCK = me.obtenerStock(p.id, s.id);
 
                         informe.push(fila);
                     });
