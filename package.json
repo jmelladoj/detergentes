@@ -28,6 +28,7 @@
         "chart.js": "^2.8.0",
         "vee-validate": "^2.2.15",
         "vue-barcode": "^1.2.0",
+        "vue-barcode-scanner": "^0.6.0",
         "vue-bootstrap-typeahead": "^0.2.6",
         "vue-chartjs": "^3.4.2",
         "vue-dni": "^1.0.1",

@@ -114,16 +114,32 @@ class ProductoController extends Controller
                 ['producto_id' => $request->producto_id , 'sucursal_id' =>  $item->sucursal_id]
             );
 
-            $stock->stock += $item->stock;
+            if($request->accion == 1){
+                $stock->stock += $item->stock;
+            } else if($request->accion == 2){
+                $stock->stock -= $item->stock;
+            }
+            
             $stock->save();
 
             $total_stock += $item->stock;
         }
 
         $producto = Producto::find($request->producto_id);
-        $producto->stock += $total_stock;
+
+        if($request->accion == 1){
+            $producto->stock += $total_stock;
+        } else if($request->accion == 2){
+            $producto->stock -= $total_stock;
+        }
+
         $producto->save();
 
-        LogStockRegistro::create(['mensaje' => \Auth::user()->name . ' ha ingresado ' . $total_stock . ' productos a ' . $producto->nombre]);
+        if($request->accion == 1){
+            LogStockRegistro::create(['mensaje' => \Auth::user()->name . ' ha ingresado ' . $total_stock . ' productos a ' . $producto->nombre]);
+        } else if($request->accion == 2){
+            LogStockRegistro::create(['mensaje' => \Auth::user()->name . ' ha quitado ' . $total_stock . ' productos a ' . $producto->nombre]);
+        }
+        
     }
 }

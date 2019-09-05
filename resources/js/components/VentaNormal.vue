@@ -152,13 +152,17 @@
 
 <script>
     import Vue2Filters from 'vue2-filters';
-    import VueBootstrapTypeahead from 'vue-bootstrap-typeahead'
+    import VueBootstrapTypeahead from 'vue-bootstrap-typeahead';
+    import VueBarcodeScanner from 'vue-barcode-scanner';
 
-    Vue.use(Vue2Filters)
-    Vue.component('vue-bootstrap-typeahead', VueBootstrapTypeahead)
+    Vue.use(Vue2Filters);
+    Vue.component('vue-bootstrap-typeahead', VueBootstrapTypeahead);
+    Vue.use(VueBarcodeScanner);
+    
 
 
     export default {
+        name: 'VueBarcodeTest',
         data (){
             return {
                 fecha: 0,
@@ -174,7 +178,7 @@
                 detalle_pago : [],
                 stock_sucursales : [],
                 errorVenta : 0,
-                errores : [],
+                errores : []
             }
         },
         watch: {
@@ -188,7 +192,45 @@
                 this.obtenerTotales();
             }
         },
+        created () {
+            this.$barcodeScanner.init(this.onBarcodeScanned)
+        },
+        destroyed () {
+            this.$barcodeScanner.destroy()
+        },
         methods : {
+            onBarcodeScanned (barcode) {
+                let me = this;
+
+                var producto = me.productos.find(function(p) {
+                    return p.codigo == barcode;
+                });
+
+                var p = me.detalle_venta.find(function(d) {
+                    return d.producto_id == producto.id;
+                });
+
+                if(p){
+                    me.limitarStock(me.detalle_venta.indexOf(p));
+                    p.cantidad += 1;
+                } else {
+                    var item = new Object();
+
+                    item['producto_id'] = producto.id;
+                    item['producto_nombre'] = producto.nombre;
+                    item['cantidad'] = 1;
+                    item['producto_valor'] = producto.precio_normal;
+                    item['producto_valor_normal'] = producto.precio_normal;
+                    item['producto_valor_mayorista'] = producto.precio_mayorista;
+                    item['cantidad_mayorista'] = producto.cantidad_mayorista;
+                    
+
+                    me.detalle_venta.push(item);
+                }
+            },
+            resetBarcode () {
+                let barcode = this.$barcodeScanner.getPreviousCode()
+            },
             mostrarMensaje(tipo_alerta, mensaje){
                 swal({
                     type: tipo_alerta,
@@ -227,6 +269,9 @@
                 if(me.detalle_venta[index].cantidad >= stock_sucursal.stock){
                     var mensaje = 'Stock superado, solo se pueden vender ' +  stock_sucursal.stock + ' productos.';
                     this.mostrarMensaje('warning', mensaje);
+
+                    me.detalle_venta[index].cantidad -= 1;
+                    return;
                 }
             },
             listarSucursales(){

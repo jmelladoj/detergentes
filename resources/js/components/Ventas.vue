@@ -83,9 +83,9 @@
                                             >
 
                                             <template slot="acciones" slot-scope="row">
-                                                <b-button size="xs" v-b-tooltip.hover title="Ver Detalle de Venta" @click="verDetalle(row.item)" class="btn btn-success">
+                                                <!--<b-button size="xs" v-b-tooltip.hover title="Ver Detalle de Venta" @click="verDetalle(row.item)" class="btn btn-success">
                                                     <i class="fa fa-plus"></i>
-                                                </b-button>
+                                                </b-button>-->
 
                                                 <b-button size="xs" v-b-tooltip.hover title="Anular Venta" @click="anularVenta(row.item.id)" class="btn btn-danger">
                                                     <i class="icon-trash"></i>
@@ -215,6 +215,20 @@
                 }
                 }) 
             },
+            verDetalle(id){
+                axios.post('/ventas/detalle',{
+                    'id': id
+                }).then(function (response) {
+                    me.listarEmpresas();
+                    swal(
+                    'Empresa eliminada!',
+                    'El registro ha sido eliminado con éxito.',
+                    'success'
+                    )
+                }).catch(function (error) {
+                    console.log(error.response.data);
+                });
+            },
             cerrarModal(){
                 this.modal = 0;
                 this.tituloModal = '';
@@ -231,48 +245,6 @@
                 this.tipoAccion = 0;
                 this.errorEmpresa = 0;
             },
-            abrirModal(modelo, accion, data = []){
-                switch(modelo){
-                    case "empresa":
-                    {
-                        switch(accion){
-                            case 'registrar':
-                            { 
-                                this.modal = 1;
-                                this.tituloModal = 'Registrar Empresa';
-                                this.venta_id = 0;
-                                this.nombre = '';
-                                this.rut = '';
-                                this.direccion = '';
-                                this.giro = '';
-                                this.telefono = 0;
-                                this.direccion = '';
-                                this.comuna = '';
-                                this.correo = '';
-                                this.direccion = '';
-                                this.tipoAccion = 1;
-                                break;
-                            }
-                            case 'actualizar':
-                            {
-                                this.modal = 1;
-                                this.tituloModal = 'Actualizar empresa';
-                                this.tipoAccion = 2;
-                                this.venta_id = data['id'];
-                                this.nombre = data['nombre'];
-                                this.rut = data['rut'];
-                                this.direccion = data['direccion'];
-                                this.giro = data['giro'];
-                                this.telefono = data['telefono'];
-                                this.direccion = data['direccion'];
-                                this.comuna = data['comuna'];
-                                this.correo = data['correo'];
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
         },
         mounted() {
             this.listarVentas();

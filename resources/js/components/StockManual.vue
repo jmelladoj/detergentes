@@ -29,7 +29,7 @@
                             <form id="formulario_venta" name="formulario_venta" class="form">
                                 <div class="form-group row">
                                     <label for="" class="col-md-3 col-form-label">SELECCIÓN DE PRODUCTO</label>
-                                    <div class="col-md-9">
+                                    <div class="col-md-6">
                                         <vue-bootstrap-typeahead
                                             ref="typeahead"
                                             :data="productos"
@@ -38,6 +38,12 @@
                                             placeholder="Buscar ..."
                                             @hit="productoSeleccionado()"
                                         />
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select v-model="accion" class="form-control">
+                                            <option value="1">SUMAR</option>
+                                            <option value="2">RESTAR</option>
+                                        </select>
                                     </div>
                                 </div>
 
@@ -55,7 +61,7 @@
                                                 <tr v-for="(item, index) in detalle_stock" :key="index" :id="index">
                                                     <td align="center">{{ index + 1 }}</td>
                                                     <td align="left"><label class="label-control" v-text="detalle_stock[index].sucursal_nombre"></label></td>
-                                                    <td><input type="number" class="form-control" v-model="detalle_stock[index].stock" min="1" /></td>
+                                                    <td><input type="number" class="form-control" v-model="detalle_stock[index].stock" min="0" /></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -112,6 +118,7 @@
                 sucursales : [],
                 logs : [],
                 errorStockManual : 0,
+                accion : 1,
                 errores : [],
             }
         },
@@ -211,7 +218,8 @@
 
                     axios.post('/producto/ingreso/stock',{
                         'producto_id': me.producto_id,
-                        'detalle_stock' : JSON.stringify(me.detalle_stock)
+                        'detalle_stock' : JSON.stringify(me.detalle_stock),
+                        'accion': me.accion
                     }).then(function (response) {
                         me.mostrarMensaje('success', 'Stock ingresado correctamente');
                         me.producto_nombre = "";

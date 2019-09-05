@@ -47,7 +47,7 @@ Vue.component('stock-manual', require('./components/StockManual.vue').default);
 const app = new Vue({
     el: '#app',
     data :{
-        menu : 16
+        menu : 0
     }
 });
 

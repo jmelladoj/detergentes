@@ -26,7 +26,7 @@
                                         <p class="text-muted">CANTIDAD VENTAS</p>
                                     </div>
                                     <div class="ml-auto">
-                                        <h2 class="counter text-primary" v-text="resumen.cantidad_ventas">23</h2>
+                                        <h6 class="counter text-cyan" v-for="(item, index) in resumen.ventas_sucursales" :key="index" v-text="item.sucursal + ' : ' + item.cantidad"></h6>
                                     </div>
                                 </div>
                             </div>
@@ -44,7 +44,7 @@
                                         <p class="text-muted">RECAUDADO SEMANAL</p>
                                     </div>
                                     <div class="ml-auto">
-                                        <h2 class="counter text-cyan" v-text="resumen.total_ventas"></h2>
+                                        <h6 class="counter text-cyan" v-for="(item, index) in resumen.ventas_sucursales" :key="index" v-text="item.sucursal + ' : $' + item.total"></h6>
                                     </div>
                                 </div>
                             </div>
@@ -62,7 +62,7 @@
                                         <p class="text-muted">PRODUCTOS VENDIDOS</p>
                                     </div>
                                     <div class="ml-auto">
-                                        <h2 class="counter text-purple" v-text="resumen.productos_vendido"></h2>
+                                        <h6 class="counter text-cyan" v-for="(item, index) in resumen.ventas_sucursales" :key="index" v-text="item.sucursal + ' : ' + item.productos_vendidos"></h6>
                                     </div>
                                 </div>
                             </div>
@@ -80,55 +80,6 @@
                     </div>
                 </div>
             </div>
-
-            <!--<div class="row">
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="form-group row">
-                                <div class="col-md-6">
-                                    <div class="row form-group">
-                                        <div class="table-responsive">
-                                            <h4 class="m-b-20 text-center">Productos más vendidos</h4>
-                                            <table id="tablaProductos" name="tablaProductos" class="table table-bordered table-striped">
-                                                <thead>
-                                                    <tr>
-                                                        <th align="center">#</th>
-                                                        <th align="left">NOMBRE</th>
-                                                        <th align="center">CANTIDAD</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>    
-                                                    <tr></tr>     
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="row form-group">
-                                        <div class="table-responsive">
-                                            <h4 class="m-b-20 text-center">Productos menos vendidos</h4>
-                                            <table id="tablaProductos" name="tablaProductos" class="table table-bordered table-striped">
-                                                <thead>
-                                                    <tr>
-                                                        <th align="center">#</th>
-                                                        <th align="left">NOMBRE</th>
-                                                        <th align="center">CANTIDAD</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>    
-                                                    <tr></tr>     
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>-->
         </div>
 
     </div>
@@ -161,16 +112,27 @@
                         labels: ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sábado'],
                         datasets: [
                             {
-                                label: 'Ventas en la semana',
-                                backgroundColor: '#f87979',
+                                label: me.resumen.ventas_sucursales[0].sucursal,
+                                backgroundColor: me.resumen.ventas_sucursales[0].color,
                                 data: [
-                                        me.resumen.ventas_lunes, 
-                                        me.resumen.ventas_martes, 
-                                        me.resumen.ventas_miercoles, 
-                                        me.resumen.ventas_jueves, 
-                                        me.resumen.ventas_viernes, 
-                                        me.resumen.ventas_sabado
-                                    ]
+                                    me.resumen.ventas_sucursales[0].ventas_lunes, 
+                                    me.resumen.ventas_sucursales[0].ventas_martes, 
+                                    me.resumen.ventas_sucursales[0].ventas_miercoles, 
+                                    me.resumen.ventas_sucursales[0].ventas_jueves, 
+                                    me.resumen.ventas_sucursales[0].ventas_viernes, 
+                                    me.resumen.ventas_sucursales[0].ventas_sabado
+                                ]
+                            },{
+                                label: me.resumen.ventas_sucursales[1].sucursal,
+                                backgroundColor: me.resumen.ventas_sucursales[1].color,
+                                data: [
+                                    me.resumen.ventas_sucursales[1].ventas_lunes, 
+                                    me.resumen.ventas_sucursales[1].ventas_martes, 
+                                    me.resumen.ventas_sucursales[1].ventas_miercoles, 
+                                    me.resumen.ventas_sucursales[1].ventas_jueves, 
+                                    me.resumen.ventas_sucursales[1].ventas_viernes, 
+                                    me.resumen.ventas_sucursales[1].ventas_sabado
+                                ]
                             }
                         ]
                     }, 
