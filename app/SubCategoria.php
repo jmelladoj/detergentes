@@ -13,4 +13,8 @@ class SubCategoria extends Model
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
+
+    public function categoria(){
+        return $this->belongsTo('App\Categoria', 'categoria_id');
+    }
 }

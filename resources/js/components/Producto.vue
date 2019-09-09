@@ -212,9 +212,9 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label> SubCategoría de Producto</label>
+                                            <label> Subcategoría de Producto</label>
                                             <select class="form-control p-0" v-model="sub_categoria_id">
-                                                <option v-for="subcategoria in subCategorias" :key="subcategoria.id" :value="subcategoria.id" v-text="subcategoria.nombre"></option>
+                                                <option v-for="subcategoria in subCategorias" :key="subcategoria.id" :value="subcategoria.id" v-text="subcategoria.categoria.nombre + ' - ' + subcategoria.nombre"></option>
                                             </select>
                                         </div>
                                     </div>

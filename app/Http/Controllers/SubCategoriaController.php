@@ -12,7 +12,7 @@ class SubCategoriaController extends Controller
     public function index(Request $request){
         if (!$request->ajax()) return redirect('/');
         
-        $subCategorias = SubCategoria::orderBy('nombre', 'asc')->get();
+        $subCategorias = SubCategoria::with('categoria')->orderBy('nombre', 'asc')->get();
 
         return [
             'subCategorias' => $subCategorias
