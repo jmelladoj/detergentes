@@ -23,7 +23,7 @@ class CreateDetalleVentasTable extends Migration
             $table->foreign('producto_id')->references('id')->on('productos');
 
             $table->integer('cantidad');
-            $table->intenger('estado')->default(1);
+            $table->integer('estado')->default(1);
 
             $table->timestamps();
         });

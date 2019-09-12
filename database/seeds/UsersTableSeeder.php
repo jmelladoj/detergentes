@@ -13,9 +13,10 @@ class UsersTableSeeder extends Seeder
     {
         //
         App\User::create([
-            'name' => 'Juan Mellado',
-            'email' => 'jmellado@test.cl',
-            'password' => bcrypt('12345678')
+            'name' => 'Administrador',
+            'email' => 'admin@detergentesprocleaning.cl',
+            'password' => bcrypt('12345678'),
+            'perfil_id' => 1
         ]);
     }
 }

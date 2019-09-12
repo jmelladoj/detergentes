@@ -36,6 +36,7 @@ Vue.component('dashboard', require('./components/Dashboard.vue').default);
 Vue.component('pendientes', require('./components/Pendientes.vue').default);
 //Vue.component('venta-premium', require('./components/VentaPremium'));
 Vue.component('stock-manual', require('./components/StockManual.vue').default);
+Vue.component('perfiles', require('./components/Perfil.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

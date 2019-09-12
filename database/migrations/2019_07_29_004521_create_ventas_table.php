@@ -25,7 +25,7 @@ class CreateVentasTable extends Migration
             $table->unsignedBigInteger('sucursal_id');
             $table->foreign('sucursal_id')->references('id')->on('sucursales');
 
-            $table->intenger('estado')->default(1);
+            $table->integer('estado')->default(1);
             $table->softDeletes();
             $table->timestamps();
         });

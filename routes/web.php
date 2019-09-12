@@ -34,7 +34,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/sucursal/registrar', 'SucursalController@guardarSucursal');
     Route::post('/sucursal/actualizar', 'SucursalController@actualizarSucursal');
     Route::post('/sucursal/eliminar', 'SucursalController@eliminarSucursal');
-    
+  
+    //Rutas de perfiles
+    Route::get('/perfiles', 'PerfilController@index');
+    Route::post('/perfil/registrar', 'PerfilController@guardar');
+    Route::post('/perfil/actualizar', 'PerfilController@actualizar');
+    Route::post('/perfil/eliminar', 'PerfilController@eliminar');
+
     //Rutas de usuario
     Route::get('/usuarios', 'UserController@index');
     Route::post('/usuario/registrar', 'UserController@guardarUsuario');
