@@ -88,7 +88,7 @@
                                             @filtered="onFiltered"
                                             >
                                             <template slot="acciones" slot-scope="row">
-                                                <b-button size="xs" v-b-tooltip.hover title="Editar informción de usuario content" @click="abrirModal('usuario','actualizar',row.item)" class="btn btn-warning">
+                                                <b-button size="xs" v-b-tooltip.hover title="Editar informción de usuario" @click="abrirModal('usuario','actualizar',row.item)" class="btn btn-warning">
                                                     <i class="icon-pencil"></i>
                                                 </b-button>
 
@@ -159,6 +159,17 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label> Perfil de usuario </label>
+                                            <select class="form-control p-0" v-model="perfil_id">
+                                                <option value="0">Selecciona un perfil</option>
+                                                <option v-for="perfil in perfiles" :key="perfil.id" :value="perfil.id" v-text="perfil.nombre"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -187,11 +198,13 @@
     export default {
         data (){
             return {
+                perfil_id: 0,
                 usuario_id: 0,
                 nombre : '',
                 correo : '',
                 clave : '',
                 usuarios : [],
+                perfiles: [],
                 modal : 0,
                 tituloModal : '',
                 tipoAccion : 0,
@@ -244,6 +257,17 @@
                     console.log(error.response.data);
                 });
             },
+            listarPerfiles(){
+                let me=this;
+                var url= '/perfiles';
+                axios.get(url).then(function (response) {
+                    var respuesta= response.data;
+                    me.perfiles = respuesta.perfiles;
+                })
+                .catch(function (error) {
+                    console.log(error.response.data);
+                });
+            },
             registrarUsuario(){
                 if (this.validarUsuario()){
                     return;
@@ -254,7 +278,8 @@
                 axios.post('/usuario/registrar',{
                     'nombre': this.nombre,
                     'correo': this.correo,
-                    'clave' : this.clave
+                    'clave' : this.clave,
+                    'perfil_id': this.perfil_id
                 }).then(function (response) {
                     me.cerrarModal();
                     me.listarUsuarios();
@@ -276,7 +301,8 @@
                     'nombre': this.nombre,
                     'correo': this.correo,
                     'clave' : this.clave,
-                    'usuario_id': this.usuario_id
+                    'usuario_id': this.usuario_id,
+                    'perfil_id': this.perfil_id
                 }).then(function (response) {
                     me.cerrarModal();
                     me.listarUsuarios();
@@ -329,6 +355,7 @@
                 if (!this.correo) this.errores.push("Se le debe asignar un correo al usuario");
                 if (!this.correo.includes('.') || !this.correo.includes('@')) this.errores.push("Debes ingresar un correo valido");
                 if (!this.clave && this.tipoAccion == 1) this.errores.push("Se debe de ingresar una clave.");
+                if (this.perfil_id <= 0) this.errores.push("Se debe de ingresar un perfil al usuario.");
                 if (this.errores.length) this.errorUsuario = 1;
 
                 return this.errorUsuario;
@@ -353,6 +380,7 @@
                 this.nombre = '';
                 this.correo = '';
                 this.clave = '';
+                this.perfil_id = 0;
                 this.tipoAccion = 0;
                 this.errorUsuario = 0;
             },
@@ -368,6 +396,7 @@
                                 this.nombre = '';
                                 this.correo = '';
                                 this.clave = '';
+                                this.perfil_id = 0;
                                 this.tipoAccion = 1;
                                 break;
                             }
@@ -378,6 +407,7 @@
                                 this.tipoAccion = 2;
                                 this.nombre = data['name'];
                                 this.correo = data['email'];
+                                this.perfil_id = data['perfil_id'];
 
                                 if(data['sucursal_id'] == '' || data['sucursal_id'] == null){
                                     data['sucursal_id'] = "NULL";
@@ -393,6 +423,7 @@
         },
         mounted() {
             this.listarUsuarios();
+            this.listarPerfiles();
         }
     }
 </script>
