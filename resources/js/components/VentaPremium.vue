@@ -27,6 +27,19 @@
                             <br>
                             <form id="formulario_venta" name="formulario_venta" class="form">
                                 <div class="form-group row">
+                                    <label for="" class="col-md-2 col-form-label">RUT CLIENTE</label>
+                                    <div class="col-md-10">
+                                        <vue-bootstrap-typeahead
+                                            ref="typeahead"
+                                            :data="clientes"
+                                            :serializer="c => c.run + ' - ' + c.nombre"
+                                            placeholder="Buscar ..."
+                                            @hit="clienteSeleccionado($event)"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div v-show="cliente_id" class="form-group row">
                                     <label for="" class="col-md-2 col-form-label">FECHA</label>
                                     <div class="col-md-4">
                                         <input type="date" v-model="fecha" class="form-control" readonly>
@@ -40,7 +53,7 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group row">
+                                <div v-show="cliente_id" class="form-group row">
                                     <label for="" class="col-md-2 col-form-label">ITEM</label>
                                     <div class="col-md-10">
                                         <vue-bootstrap-typeahead
@@ -49,7 +62,7 @@
                                             v-model="producto_nombre"
                                             :serializer="p => p.nombre"
                                             placeholder="Buscar ..."
-                                            @hit="productoSeleccionado()"
+                                            @hit="productoSeleccionado($event)"
                                         />
                                     </div>
                                 </div>
@@ -70,7 +83,7 @@
                                                 <tr v-for="(item, index) in detalle_venta" :key="index" :id="index">
                                                     <td align="center">{{ index + 1 }}</td>
                                                     <td align="left"><label class="label-control" v-text="item.producto_nombre"></label></td>
-                                                    <td><input type="number" class="form-control" v-model="detalle_venta[index].cantidad" min="1" @change="cambiarValorProducto(index);limitarStock(index);"/></td>
+                                                    <td><input type="number" class="form-control" v-model="detalle_venta[index].cantidad" min="1" @change="cambiarValorProducto(index, detalle_venta[index].lista);limitarStock(index);"/></td>
                                                     <td><input type="number" class="form-control" :value="detalle_venta[index].producto_valor" readonly/></td>
                                                     <td align="center"><button type="button" class="btn btn-circle btn-danger btn-sm" data-toggle="tooltip" title="Eliminar item" @click="eliminarFila(index)" ><i class="fa fa-remove" ></i></button></td>
                                                 </tr>
@@ -152,17 +165,22 @@
 
 <script>
     import Vue2Filters from 'vue2-filters';
-    import VueBootstrapTypeahead from 'vue-bootstrap-typeahead'
+    import VueBootstrapTypeahead from 'vue-bootstrap-typeahead';
+    import VueBarcodeScanner from 'vue-barcode-scanner';
 
-    Vue.use(Vue2Filters)
-    Vue.component('vue-bootstrap-typeahead', VueBootstrapTypeahead)
+    Vue.use(Vue2Filters);
+    Vue.component('vue-bootstrap-typeahead', VueBootstrapTypeahead);
+    Vue.use(VueBarcodeScanner);
+    
 
 
     export default {
+        name: 'VueBarcodeTest',
         data (){
             return {
                 fecha: 0,
                 producto_nombre: '',
+                cliente_id: '',
                 sucursal_id : 1,
                 subtotal : 0,
                 descuento : 0,
@@ -170,11 +188,13 @@
                 observacion: '',
                 productos: [],
                 sucursales : [],
+                clientes :[],
+                lista : [],
                 detalle_venta : [],
                 detalle_pago : [],
                 stock_sucursales : [],
                 errorVenta : 0,
-                errores : [],
+                errores : []
             }
         },
         watch: {
@@ -188,7 +208,45 @@
                 this.obtenerTotales();
             }
         },
+        created () {
+            this.$barcodeScanner.init(this.onBarcodeScanned)
+        },
+        destroyed () {
+            this.$barcodeScanner.destroy()
+        },
         methods : {
+            onBarcodeScanned (barcode) {
+                let me = this;
+
+                var producto = me.productos.find(function(p) {
+                    return p.codigo == barcode;
+                });
+
+                var p = me.detalle_venta.find(function(d) {
+                    return d.producto_id == producto.id;
+                });
+
+                if(p){
+                    me.limitarStock(me.detalle_venta.indexOf(p));
+                    p.cantidad += 1;
+                } else {
+                    var item = new Object();
+
+                    item['producto_id'] = producto.id;
+                    item['producto_nombre'] = producto.nombre;
+                    item['cantidad'] = 1;
+                    item['producto_valor'] = producto.precio_normal;
+                    item['producto_valor_normal'] = producto.precio_normal;
+                    item['producto_valor_mayorista'] = producto.precio_mayorista;
+                    item['cantidad_mayorista'] = producto.cantidad_mayorista;
+                    
+
+                    me.detalle_venta.push(item);
+                }
+            },
+            resetBarcode () {
+                let barcode = this.$barcodeScanner.getPreviousCode()
+            },
             mostrarMensaje(tipo_alerta, mensaje){
                 swal({
                     type: tipo_alerta,
@@ -207,12 +265,17 @@
                 me.errorStock = 0
                 me.erroresStock = [];
 
+                me.producto_nombre = "";
+                this.$refs.typeahead.inputValue = "";
+
             },
-            cambiarValorProducto(index){
+            cambiarValorProducto(index, estado){
                 let me = this;
 
-                me.detalle_venta[index].producto_valor = me.detalle_venta[index].cantidad >= me.detalle_venta[index].cantidad_mayorista ? me.detalle_venta[index].producto_valor_mayorista : me.detalle_venta[index].producto_valor_normal;
-
+                if(estado == 0){
+                    me.detalle_venta[index].producto_valor = me.detalle_venta[index].cantidad >= me.detalle_venta[index].cantidad_mayorista ? me.detalle_venta[index].producto_valor_mayorista : me.detalle_venta[index].producto_valor_normal;
+                }
+                
                 me.obtenerTotales();
 
             },
@@ -227,6 +290,9 @@
                 if(me.detalle_venta[index].cantidad >= stock_sucursal.stock){
                     var mensaje = 'Stock superado, solo se pueden vender ' +  stock_sucursal.stock + ' productos.';
                     this.mostrarMensaje('warning', mensaje);
+
+                    me.detalle_venta[index].cantidad -= 1;
+                    return;
                 }
             },
             listarSucursales(){
@@ -235,6 +301,28 @@
                 axios.get(url).then(function (response) {
                     var respuesta= response.data;
                     me.sucursales = respuesta.sucursales;
+                })
+                .catch(function (error) {
+                    console.log(error.response.data);
+                });
+            },
+            listarClientes(){
+                let me=this;
+                var url= '/clientes';
+                axios.get(url).then(function (response) {
+                    var respuesta= response.data;
+                    me.clientes = respuesta.clientes;
+                })
+                .catch(function (error) {
+                    console.log(error.response.data);
+                });
+            },
+            listarListaCliente(id){
+                let me=this;
+                var url= '/clientes/' + id + '/lista';
+                axios.get(url).then(function (response) {
+                    var respuesta= response.data;
+                    me.lista = respuesta.lista;
                 })
                 .catch(function (error) {
                     console.log(error.response.data);
@@ -262,36 +350,49 @@
                     console.log(error.response.data);
                 });
             },
-            productoSeleccionado(){
+            clienteSeleccionado(e){
+                this.cliente_id = e.id;
+                this.listarListaCliente(this.cliente_id);
+            },
+            productoSeleccionado(e){
                 let me = this;
 
-                var producto = me.productos.find(function(p) {
-                    return p.nombre == me.producto_nombre;
-                });
-
                 var p = me.detalle_venta.find(function(d) {
-                    return d.producto_id == producto.id;
+                    return d.producto_id == e.id;
                 });
 
+                var l = me.lista.find(function(l) {
+                    return l.producto_id == e.id;
+                });
+                
                 if(p){
                     this.mostrarMensaje('warning', 'El producto ya esta en la lista.');
+                    this.producto_nombre = "";
+                    this.$refs.typeahead.inputValue = "";
                     return false;
                 }
 
                 var item = new Object();
 
-                item['producto_id'] = producto.id;
-                item['producto_nombre'] = producto.nombre;
+                item['producto_id'] = e.id;
+                item['producto_nombre'] = e.nombre;
                 item['cantidad'] = 1;
-                item['producto_valor'] = producto.precio_normal;
-                item['producto_valor_normal'] = producto.precio_normal;
-                item['producto_valor_mayorista'] = producto.precio_mayorista;
-                item['cantidad_mayorista'] = producto.cantidad_mayorista;
+
+                if(l){
+                    item['lista'] = 1;
+                    item['producto_valor'] = l.precio_normal;
+                } else {
+                    item['lista'] = 0;
+                    item['producto_valor'] = e.precio_normal;
+                }
                 
+                item['producto_valor_normal'] = e.precio_normal;
+                item['producto_valor_mayorista'] = e.precio_mayorista;
+                item['cantidad_mayorista'] = e.cantidad_mayorista;
 
                 me.detalle_venta.push(item);
-                me.producto_nombre = "";
 
+                me.producto_nombre = "";
                 this.$refs.typeahead.inputValue = "";
             },
             obtenerTotales(){
@@ -300,12 +401,12 @@
                 var subtotal = 0;
 
                 me.detalle_venta.forEach(function(item) {
-                    subtotal = item.cantidad * item.producto_valor;
+                    subtotal += item.cantidad * item.producto_valor;
                 });
 
                 me.subtotal = subtotal;
                 me.total = parseInt(subtotal * (1 - (me.descuento / 100)));
-                me.detalle_pago[0].a_pagar = parseInt(subtotal * (1 - (me.descuento / 100)));
+                me.detalle_pago[0].a_pagar = me.total;
             },
             agregarMedioPago(monto = 0){
                 let me = this;
@@ -460,6 +561,7 @@
             this.listarProductos();
             this.listarSucursales();
             this.listarStockSucursales();
+            this.listarClientes();
             this.obtenerFechaActual();
             this.agregarMedioPago();
         }

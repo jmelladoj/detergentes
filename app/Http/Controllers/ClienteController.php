@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Cliente;
+use App\ListaCliente;
 
 class ClienteController extends Controller
 {
@@ -15,6 +16,16 @@ class ClienteController extends Controller
 
         return [
             'clientes' => $clientes
+        ];
+    }
+
+    public function indexVenta(Request $request, $id){
+        if (!$request->ajax()) return redirect('/');
+        
+        $lista = ListaCliente::where('cliente_id', $id)->get();
+
+        return [
+            'lista' => $lista
         ];
     }
 

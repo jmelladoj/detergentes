@@ -13,4 +13,9 @@ class Cliente extends Model
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
+
+    public function lista()
+    {
+        return $this->hasMany(ListaCliente::class, 'cliente_id');
+    }
 }

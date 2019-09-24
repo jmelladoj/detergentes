@@ -49,7 +49,7 @@
                                             v-model="producto_nombre"
                                             :serializer="p => p.nombre"
                                             placeholder="Buscar ..."
-                                            @hit="productoSeleccionado()"
+                                            @hit="productoSeleccionado($event)"
                                         />
                                     </div>
                                 </div>
@@ -249,6 +249,9 @@
                 me.errorStock = 0
                 me.erroresStock = [];
 
+                me.producto_nombre = "";
+                this.$refs.typeahead.inputValue = "";
+
             },
             cambiarValorProducto(index){
                 let me = this;
@@ -307,36 +310,34 @@
                     console.log(error.response.data);
                 });
             },
-            productoSeleccionado(){
+            productoSeleccionado(e){
                 let me = this;
 
-                var producto = me.productos.find(function(p) {
-                    return p.nombre == me.producto_nombre;
-                });
-
                 var p = me.detalle_venta.find(function(d) {
-                    return d.producto_id == producto.id;
+                    return d.producto_id == e.id;
                 });
 
                 if(p){
                     this.mostrarMensaje('warning', 'El producto ya esta en la lista.');
+                    this.producto_nombre = "";
+                    this.$refs.typeahead.inputValue = "";
                     return false;
                 }
 
                 var item = new Object();
 
-                item['producto_id'] = producto.id;
-                item['producto_nombre'] = producto.nombre;
+                item['producto_id'] = e.id;
+                item['producto_nombre'] = e.nombre;
                 item['cantidad'] = 1;
-                item['producto_valor'] = producto.precio_normal;
-                item['producto_valor_normal'] = producto.precio_normal;
-                item['producto_valor_mayorista'] = producto.precio_mayorista;
-                item['cantidad_mayorista'] = producto.cantidad_mayorista;
+                item['producto_valor'] = e.precio_normal;
+                item['producto_valor_normal'] = e.precio_normal;
+                item['producto_valor_mayorista'] = e.precio_mayorista;
+                item['cantidad_mayorista'] = e.cantidad_mayorista;
                 
 
                 me.detalle_venta.push(item);
-                me.producto_nombre = "";
 
+                me.producto_nombre = "";
                 this.$refs.typeahead.inputValue = "";
             },
             obtenerTotales(){
@@ -345,12 +346,12 @@
                 var subtotal = 0;
 
                 me.detalle_venta.forEach(function(item) {
-                    subtotal = item.cantidad * item.producto_valor;
+                    subtotal += item.cantidad * item.producto_valor;
                 });
 
                 me.subtotal = subtotal;
                 me.total = parseInt(subtotal * (1 - (me.descuento / 100)));
-                me.detalle_pago[0].a_pagar = parseInt(subtotal * (1 - (me.descuento / 100)));
+                me.detalle_pago[0].a_pagar = me.total;
             },
             agregarMedioPago(monto = 0){
                 let me = this;

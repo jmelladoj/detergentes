@@ -103,6 +103,7 @@ Route::middleware(['auth'])->group(function () {
 
     //Rutas de clientes
     Route::get('/clientes', 'ClienteController@index');
+    Route::get('/clientes/{id}/lista', 'ClienteController@indexVenta');
     Route::post('/cliente/registrar', 'ClienteController@guardarCliente');
     Route::post('/cliente/actualizar', 'ClienteController@actualizarCliente');
     Route::post('/cliente/eliminar', 'ClienteController@eliminarCliente');

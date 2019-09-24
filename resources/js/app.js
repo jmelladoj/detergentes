@@ -31,10 +31,10 @@ Vue.component('sucursal', require('./components/Sucursal.vue').default);
 Vue.component('cotizacion', require('./components/Cotizacion.vue').default);
 Vue.component('orden-compra', require('./components/OrdenCompra.vue').default);
 Vue.component('venta-normal', require('./components/VentaNormal.vue').default);
+Vue.component('venta-premium', require('./components/VentaPremium.vue').default);
 Vue.component('detalle-ventas', require('./components/Ventas.vue').default);
 Vue.component('dashboard', require('./components/Dashboard.vue').default);
 Vue.component('pendientes', require('./components/Pendientes.vue').default);
-//Vue.component('venta-premium', require('./components/VentaPremium'));
 Vue.component('stock-manual', require('./components/StockManual.vue').default);
 Vue.component('perfiles', require('./components/Perfil.vue').default);
 
