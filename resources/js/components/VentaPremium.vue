@@ -281,18 +281,14 @@
             },
             limitarStock(index){
                 let me = this;
-                var producto = me.productos.filter(p => p.id = me.detalle_venta[index].producto_id);
 
                 var stock_sucursal = me.stock_sucursales.find(function(s) {
-                    return s.producto_id == producto[0].id && s.sucursal_id == me.sucursal_id;
+                    return s.producto_id == me.detalle_venta[index].producto_id && s.sucursal_id == me.sucursal_id;
                 });
-
-                if(me.detalle_venta[index].cantidad >= stock_sucursal.stock){
-                    var mensaje = 'Stock superado, solo se pueden vender ' +  stock_sucursal.stock + ' productos.';
-                    this.mostrarMensaje('warning', mensaje);
-
-                    me.detalle_venta[index].cantidad -= 1;
-                    return;
+                
+                if(parseInt(me.detalle_venta[index].cantidad) > parseInt(stock_sucursal.stock)){
+                    this.mostrarMensaje('warning', 'Stock superado, solo se pueden vender ' +  stock_sucursal.stock + ' productos.');
+                    me.detalle_venta[index].cantidad = stock_sucursal.stock;
                 }
             },
             listarSucursales(){

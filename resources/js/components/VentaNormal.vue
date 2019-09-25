@@ -49,6 +49,7 @@
                                             v-model="producto_nombre"
                                             :serializer="p => p.nombre"
                                             placeholder="Buscar ..."
+                                            :maxMatches="8"
                                             @hit="productoSeleccionado($event)"
                                         />
                                     </div>
@@ -70,7 +71,7 @@
                                                 <tr v-for="(item, index) in detalle_venta" :key="index" :id="index">
                                                     <td align="center">{{ index + 1 }}</td>
                                                     <td align="left"><label class="label-control" v-text="item.producto_nombre"></label></td>
-                                                    <td><input type="number" class="form-control" v-model="detalle_venta[index].cantidad" min="1" @change="cambiarValorProducto(index);limitarStock(index);"/></td>
+                                                    <td><input type="number" class="form-control" v-model="detalle_venta[index].cantidad" min="1" @change="limitarStock(index);cambiarValorProducto(index);"/></td>
                                                     <td><input type="number" class="form-control" :value="detalle_venta[index].producto_valor" readonly/></td>
                                                     <td align="center"><button type="button" class="btn btn-circle btn-danger btn-sm" data-toggle="tooltip" title="Eliminar item" @click="eliminarFila(index)" ><i class="fa fa-remove" ></i></button></td>
                                                 </tr>
@@ -263,18 +264,14 @@
             },
             limitarStock(index){
                 let me = this;
-                var producto = me.productos.filter(p => p.id = me.detalle_venta[index].producto_id);
 
                 var stock_sucursal = me.stock_sucursales.find(function(s) {
-                    return s.producto_id == producto[0].id && s.sucursal_id == me.sucursal_id;
+                    return s.producto_id == me.detalle_venta[index].producto_id && s.sucursal_id == me.sucursal_id;
                 });
-
-                if(me.detalle_venta[index].cantidad >= stock_sucursal.stock){
-                    var mensaje = 'Stock superado, solo se pueden vender ' +  stock_sucursal.stock + ' productos.';
-                    this.mostrarMensaje('warning', mensaje);
-
-                    me.detalle_venta[index].cantidad -= 1;
-                    return;
+                
+                if(parseInt(me.detalle_venta[index].cantidad) > parseInt(stock_sucursal.stock)){
+                    this.mostrarMensaje('warning', 'Stock superado, solo se pueden vender ' +  stock_sucursal.stock + ' productos.');
+                    me.detalle_venta[index].cantidad = stock_sucursal.stock;
                 }
             },
             listarSucursales(){
@@ -513,6 +510,10 @@
 </script>
 
 <style>    
+    .vbt-autcomplete-list {
+        position: fixed !important;
+    }
+
     .modal-content{
         width: 100% !important;
         position: absolute !important;
