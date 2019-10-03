@@ -49,6 +49,7 @@ class PerfilController extends Controller
         $perfil->m_normal = $request->m_normal;
         $perfil->m_premium = $request->m_premium;
         $perfil->m_pendientes = $request->m_pendientes;
+        $perfil->por_categoria = $request->por_categoria;
         $perfil->save();
     }
 
@@ -83,6 +84,7 @@ class PerfilController extends Controller
         $perfil->m_normal = $request->m_normal;
         $perfil->m_premium = $request->m_premium;
         $perfil->m_pendientes = $request->m_pendientes;
+        $perfil->por_categoria = $request->por_categoria;
         $perfil->save();
     }
 

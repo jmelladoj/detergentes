@@ -282,6 +282,10 @@
                                             <input type="checkbox" class="custom-control-input" id="m_stock" v-model="m_stock">
                                             <label class="custom-control-label" for="m_stock">Stock</label>
                                         </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="por_categoria" v-model="por_categoria">
+                                            <label class="custom-control-label" for="por_categoria">Ventas Categorías</label>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row m-b-10">
@@ -403,7 +407,8 @@
                 m_pendientes: 0,
                 m_empresas: 0,
                 m_cotizaciones: 0,
-                m_ordenes_compra: 0
+                m_ordenes_compra: 0,
+                por_categoria: 0
             }
         },
         computed:{
@@ -467,7 +472,8 @@
                     'm_pendientes' : this.m_pendientes,
                     'm_empresas': this.m_empresas,
                     'm_cotizaciones': this.m_cotizaciones,
-                    'm_ordenes_compra': this.m_ordenes_compra
+                    'm_ordenes_compra': this.m_ordenes_compra,
+                    'por_categoria': this.por_categoria
                 }).then(function (response) {
                     me.cerrarModal();
                     me.listarPerfiles();
@@ -512,7 +518,8 @@
                     'm_empresas': this.m_empresas,
                     'm_cotizaciones': this.m_cotizaciones,
                     'm_ordenes_compra': this.m_ordenes_compra,
-                    'perfil_id': this.perfil_id
+                    'perfil_id': this.perfil_id,
+                    'por_categoria': this.por_categoria
                 }).then(function (response) {
                     me.cerrarModal();
                     me.listarPerfiles();
@@ -611,6 +618,7 @@
                 this.m_cotizaciones = 0;
                 this.m_ordenes_compra = 0;
                 this.errorPerfil = 0;
+                this.por_categoria = 0;
             },
             abrirModal(modelo, accion, data = []){
                 switch(modelo){
@@ -647,6 +655,7 @@
                                 this.m_empresas = 0;
                                 this.m_cotizaciones = 0;
                                 this.m_ordenes_compra = 0;
+                                this.por_categoria = 0;
                                 this.tipoAccion = 1;
                                 break;
                             }
@@ -681,6 +690,7 @@
                                 this.m_empresas = data['m_empresas'];
                                 this.m_cotizaciones = data['m_cotizaciones'];
                                 this.m_ordenes_compra = data['m_ordenes_compra'];
+                                this.por_categoria = data['por_categoria'];
                                 this.perfil_id = data['id'];
                                 break;
                             }

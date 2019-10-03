@@ -27,7 +27,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $usuario = \Auth::user();
+        return view('home')->with(compact('usuario'));
     }
 
     public function resumen(Request $request){

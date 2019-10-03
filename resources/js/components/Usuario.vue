@@ -134,7 +134,7 @@
                                     <li v-for="error in errores" :key="error" v-text="error"></li>
                                 </div>
                             </div>
-                            <form class="form m-t-20">
+                            <form class="form">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
@@ -170,6 +170,17 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label> Sucursal de usuario </label>
+                                            <select class="form-control p-0" v-model="sucursal_id">
+                                                <option value="0">Selecciona una sucursal</option>
+                                                <option v-for="sucursal in sucursales" :key="sucursal.id" :value="sucursal.id" v-text="sucursal.nombre"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -199,6 +210,7 @@
         data (){
             return {
                 perfil_id: 0,
+                sucursal_id: 0,
                 usuario_id: 0,
                 nombre : '',
                 correo : '',
@@ -211,6 +223,7 @@
                 estadoUsuario: 0,
                 estados : [],
                 errorUsuario : 0,
+                sucursales : [],
                 errores : [],
                 items: items,
                 fields: [
@@ -244,6 +257,17 @@
                 // Trigger pagination to update the number of buttons/pages due to filtering
                 this.totalRows = filteredItems.length
                 this.currentPage = 1
+            },
+            listarSucursales(){
+                let me=this;
+                var url= '/sucursales';
+                axios.get(url).then(function (response) {
+                    var respuesta= response.data;
+                    me.sucursales = respuesta.sucursales;
+                })
+                .catch(function (error) {
+                    console.log(error.response.data);
+                });
             },
             listarUsuarios(){
                 let me=this;
@@ -279,7 +303,8 @@
                     'nombre': this.nombre,
                     'correo': this.correo,
                     'clave' : this.clave,
-                    'perfil_id': this.perfil_id
+                    'perfil_id': this.perfil_id,
+                    'sucursal_id':this.sucursal_id
                 }).then(function (response) {
                     me.cerrarModal();
                     me.listarUsuarios();
@@ -302,7 +327,8 @@
                     'correo': this.correo,
                     'clave' : this.clave,
                     'usuario_id': this.usuario_id,
-                    'perfil_id': this.perfil_id
+                    'perfil_id': this.perfil_id,
+                    'sucursal_id':this.sucursal_id
                 }).then(function (response) {
                     me.cerrarModal();
                     me.listarUsuarios();
@@ -356,6 +382,7 @@
                 if (!this.correo.includes('.') || !this.correo.includes('@')) this.errores.push("Debes ingresar un correo valido");
                 if (!this.clave && this.tipoAccion == 1) this.errores.push("Se debe de ingresar una clave.");
                 if (this.perfil_id <= 0) this.errores.push("Se debe de ingresar un perfil al usuario.");
+                if (this.sucursal_id <= 0) this.errores.push("Se debe de ingresar un sucursal al usuario.");
                 if (this.errores.length) this.errorUsuario = 1;
 
                 return this.errorUsuario;
@@ -381,6 +408,7 @@
                 this.correo = '';
                 this.clave = '';
                 this.perfil_id = 0;
+                this.sucursal_id = 0;
                 this.tipoAccion = 0;
                 this.errorUsuario = 0;
             },
@@ -411,6 +439,7 @@
 
                                 if(data['sucursal_id'] == '' || data['sucursal_id'] == null){
                                     data['sucursal_id'] = "NULL";
+                                    this.sucursal_id = data['sucursal_id'];
                                 }
 
                                 this.usuario_id = data['id'];
@@ -424,6 +453,7 @@
         mounted() {
             this.listarUsuarios();
             this.listarPerfiles();
+            this.listarSucursales();
         }
     }
 </script>

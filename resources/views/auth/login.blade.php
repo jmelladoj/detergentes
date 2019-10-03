@@ -20,7 +20,7 @@
                         <h3 class="box-title m-b-20">Login</h3>
                         <div class="form-group ">
                             <div class="col-xs-12">
-                                <input class="form-control" id="email" name="email" type="text" required="" placeholder="Usuario"> </div>
+                                <input class="form-control" id="email" name="email" type="text" value="{{ old('email') }}" required="" placeholder="Usuario"> </div>
                         </div>
                         <div class="form-group">
                             <div class="col-xs-12">

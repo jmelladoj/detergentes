@@ -27,6 +27,7 @@ class UserController extends Controller
         $usuario->email = $request->correo;
         $usuario->password = bcrypt($request->clave);
         $usuario->perfil_id = $request->perfil_id;
+        $usuario->sucursal_id = $request->sucursal_id;
         $usuario->save();
     }
 
@@ -44,6 +45,7 @@ class UserController extends Controller
         }
 
         $usuario->perfil_id = $request->perfil_id;
+        $usuario->sucursal_id = $request->sucursal_id;
         $usuario->save();
     }
 

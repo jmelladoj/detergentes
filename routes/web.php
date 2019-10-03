@@ -60,6 +60,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/subCategoria/registrar', 'SubCategoriaController@guardarSubCategoria');
     Route::post('/subCategoria/eliminar', 'SubCategoriaController@eliminarSubCategoria');
     Route::post('/subCategoria/restaurar', 'SubCategoriaController@restaurarSubCategoria');
+    Route::get('/subcategorias/ventas', 'SubCategoriaController@informeVentas');
+    
 
     //Rutas de categorías
     Route::get('/productos', 'ProductoController@index');

@@ -164,11 +164,14 @@
 
     export default {
         name: 'VueBarcodeTest',
+        props: [
+            'usuario'
+        ],
         data (){
             return {
                 fecha: 0,
                 producto_nombre: '',
-                sucursal_id : 1,
+                sucursal_id : 0,
                 subtotal : 0,
                 descuento : 0,
                 total : 0,
@@ -257,7 +260,7 @@
             cambiarValorProducto(index){
                 let me = this;
 
-                me.detalle_venta[index].producto_valor = me.detalle_venta[index].cantidad >= me.detalle_venta[index].cantidad_mayorista ? me.detalle_venta[index].producto_valor_mayorista : me.detalle_venta[index].producto_valor_normal;
+                me.detalle_venta[index].producto_valor = parseInt(me.detalle_venta[index].cantidad)  >= parseInt(me.detalle_venta[index].cantidad_mayorista) ? me.detalle_venta[index].producto_valor_mayorista : me.detalle_venta[index].producto_valor_normal;
 
                 me.obtenerTotales();
 
@@ -400,7 +403,6 @@
                 let me = this;
 
                 me.producto_nombre = '';
-                me.sucursal_id = 1;
                 me.subtotal = 0;
                 me.descuento = 0;
                 me.total = 0;
@@ -505,6 +507,7 @@
             this.listarStockSucursales();
             this.obtenerFechaActual();
             this.agregarMedioPago();
+            this.sucursal_id = this.usuario.sucursal_id;
         }
     }
 </script>

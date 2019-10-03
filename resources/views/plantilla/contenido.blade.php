@@ -76,12 +76,12 @@
 @endif
 @if(Auth::user()->perfil->m_normal)
     <template v-if="menu==13">
-        <venta-normal></venta-normal>
+        <venta-normal :usuario="{{ json_encode($usuario) }}"></venta-normal>
     </template>
 @endif
 @if(Auth::user()->perfil->m_premium)
     <template v-if="menu==14">
-        <venta-premium></venta-premium>
+        <venta-premium :usuario="{{ json_encode($usuario) }}"></venta-premium>
     </template>
 @endif
 @if(Auth::user()->perfil->m_pendientes)
