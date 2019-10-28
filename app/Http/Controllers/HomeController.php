@@ -38,7 +38,7 @@ class HomeController extends Controller
         $colores = [ '#DC143C', '#FFA500' , '#BDB76B', '#6B8E23', '#20B2AA' , '#4169E1', '#8A2BE2', '#DB7093'];
 
         $lunes = Carbon::parse('monday this week')->format('Y-m-d');
-        $martes = Carbon::parse('Tuesday this week')->format('Y-m-d');
+        $martes = Carbon::parse('Tuesday this week')->format('Y-m-d'); 
         $miercoles = Carbon::parse('wednesday this week')->format('Y-m-d'); 
         $jueves = Carbon::parse('thursday this week')->format('Y-m-d');
         $viernes = Carbon::parse('friday this week')->format('Y-m-d');
@@ -48,13 +48,13 @@ class HomeController extends Controller
         $ventas_sucursales = array();
 
         foreach($sucursales AS $key=>$sucursal){
-            $ventas = Venta::whereBetween('fecha', [$lunes, $domingo])->where('sucursal_id', $sucursal->id)->get();
-            $ventas_lunes = Venta::whereDate('fecha', $lunes)->where('sucursal_id', $sucursal->id)->get()->sum('total');
-            $ventas_martes = Venta::whereDate('fecha', $martes)->where('sucursal_id', $sucursal->id)->get()->sum('total');
-            $ventas_miercoles = Venta::whereDate('fecha', $miercoles)->where('sucursal_id', $sucursal->id)->get()->sum('total');
-            $ventas_jueves = Venta::whereDate('fecha', $jueves)->where('sucursal_id', $sucursal->id)->get()->sum('total');
-            $ventas_viernes = Venta::whereDate('fecha', $viernes)->where('sucursal_id', $sucursal->id)->get()->sum('total');
-            $ventas_sabado = Venta::whereDate('fecha', $sabado)->where('sucursal_id', $sucursal->id)->get()->sum('total');
+            $ventas = Venta::whereBetween('fecha', [$lunes, $domingo])->where('sucursal_id', $sucursal->id)->where('estado', 2)->get();
+            $ventas_lunes = Venta::whereDate('fecha', $lunes)->where('sucursal_id', $sucursal->id)->where('estado', 2)->get()->sum('total');
+            $ventas_martes = Venta::whereDate('fecha', $martes)->where('sucursal_id', $sucursal->id)->where('estado', 2)->get()->sum('total');
+            $ventas_miercoles = Venta::whereDate('fecha', $miercoles)->where('sucursal_id', $sucursal->id)->where('estado', 2)->get()->sum('total');
+            $ventas_jueves = Venta::whereDate('fecha', $jueves)->where('sucursal_id', $sucursal->id)->where('estado', 2)->get()->sum('total');
+            $ventas_viernes = Venta::whereDate('fecha', $viernes)->where('sucursal_id', $sucursal->id)->where('estado', 2)->get()->sum('total');
+            $ventas_sabado = Venta::whereDate('fecha', $sabado)->where('sucursal_id', $sucursal->id)->where('estado', 2)->get()->sum('total');
 
             $productos_vendido = 0;
 

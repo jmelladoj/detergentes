@@ -152,6 +152,18 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="form-group row">
+                                    <div class="col-md-12">
+                                        <div class="form-group m-b-20">
+                                            <label>Stock Automatico</label>
+                                            <select class="form-control" v-model="stock_automatico">
+                                                <option value="0">NO</option>
+                                                <option value="1">SÍ</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -183,6 +195,7 @@
                 sucursal_id: 0,
                 nombre : '',
                 direccion : '',
+                stock_automatico: 0,
                 sucursales : [],
                 modal : 0,
                 tituloModal : '',
@@ -246,6 +259,7 @@
                 axios.post('/sucursal/registrar',{
                     'nombre': this.nombre,
                     'direccion': this.direccion,
+                    'stock_automatico': this.stock_automatico
                 }).then(function (response) {
                     me.cerrarModal();
                     me.listarSucursales();
@@ -266,6 +280,8 @@
                 axios.post('/sucursal/actualizar',{
                     'nombre': this.nombre,
                     'direccion': this.direccion,
+                    'direccion': this.direccion,
+                    'stock_automatico': this.stock_automatico,
                     'sucursal_id': this.sucursal_id
                 }).then(function (response) {
                     me.cerrarModal();
@@ -340,6 +356,7 @@
                 this.tituloModal = '';
                 this.nombre = '';
                 this.direccion = '';
+                this.stock_automatico = 0;
                 this.tipoAccion = 0;
                 this.errorSucursal = 0;
             },
@@ -354,6 +371,7 @@
                                 this.tituloModal = 'Registrar Sucursal';
                                 this.nombre = '';
                                 this.direccion = '';
+                                this.stock_automatico = 0;
                                 this.tipoAccion = 1;
                                 break;
                             }
@@ -364,6 +382,7 @@
                                 this.tipoAccion = 2;
                                 this.nombre = data['nombre'];
                                 this.direccion = data['direccion'];
+                                this.stock_automatico = data['stock_automatico'];
                                 this.sucursal_id = data['id'];
                                 break;
                             }

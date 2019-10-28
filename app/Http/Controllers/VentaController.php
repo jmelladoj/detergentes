@@ -10,6 +10,7 @@ use App\StockSucursal;
 use App\DetalleVenta;
 use App\DetallePago;
 use App\Producto;
+use App\Sucursal;
 
 class VentaController extends Controller
 {
@@ -22,6 +23,64 @@ class VentaController extends Controller
         return [
             'ventas' => $ventas
         ];
+    }
+
+    public function indexDetalleProductos (Request $request, $id){
+        if (!$request->ajax()) return redirect('/');
+
+        $fecha = Carbon::now()->format('Y-m-d');
+
+        $ventas = Venta::where('estado', 2)->whereDate('fecha', $fecha)->where('sucursal_id', $id)->orderBy('id', 'DESC')->with('detalle', 'pago')->get();
+
+        return [
+            'ventas' => $ventas
+        ];
+    }
+
+
+    public function indexDetalle(Request $request, $id){
+        if (!$request->ajax()) return redirect('/');
+
+        $fecha = Carbon::now()->format('Y-m-d');
+
+        $ventas = Venta::where('estado', 2)->whereDate('fecha', $fecha)->where('sucursal_id', $id)->get();
+
+        $efectivo = 0;
+        $tarjeta_credito = 0;
+        $tarjeta_debito = 0;
+        $cheque = 0;
+        $transferencia = 0;
+
+        foreach($ventas as $venta){
+            foreach($venta->pago as $detalle){
+                switch ($detalle->medio_pago) {
+                    case 1:
+                        $efectivo += $detalle->monto_pago;
+                        break;
+                    case 2:
+                        $tarjeta_credito += $detalle->monto_pago;
+                        break;
+                    case 3:
+                        $tarjeta_debito += $detalle->monto_pago;
+                        break;
+                    case 4:
+                        $cheque += $detalle->monto_pago;
+                        break;
+                    case 5:
+                        $transferencia += $detalle->monto_pago;
+                        break;
+                }
+            }
+        }
+
+        return [
+            'efectivo' => $efectivo,
+            'tarjeta_credito' => $tarjeta_credito,
+            'tarjeta_debito' => $tarjeta_debito,
+            'cheque' => $cheque,
+            'transferencia' => $transferencia
+        ];
+
     }
 
     public function pendientes(Request $request){
@@ -43,6 +102,8 @@ class VentaController extends Controller
 
             $fecha = Carbon::now();
 
+            $sucursal = Sucursal::find($request->sucursal_id);
+
             $venta = new Venta();
             $venta->subtotal = $request->subtotal;
             $venta->descuento = $request->descuento;
@@ -51,6 +112,7 @@ class VentaController extends Controller
             $venta->tipo_documento = 0;
             $venta->sucursal_id  = $request->sucursal_id;
             $venta->observacion  = $request->observacion;
+            $venta->estado = $sucursal->stock_automatico == 1 ? 2 : 1;
             $venta->save();
             
             foreach ($request->detalle_venta AS $item) {               

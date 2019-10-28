@@ -52,11 +52,18 @@
                     <nav class="sidebar-nav">
                         <ul id="sidebarnav">
                             <li class="nav-small-cap">--- MENÚ</li>
-                            @if(Auth::user()->perfil->m_dashboard)<li @click="menu=0"> <a class="waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="fa fa-line-chart"></i><span class="hide-menu"> DASHBOARD</span></a></li>@endif
+                            <li @if(!Auth::user()->perfil->m_dashboard && !Auth::user()->perfil->m_dashboard_especifico) class="d-none" @endif> 
+                                <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="fa fa-line-chart"></i><span class="hide-menu"> DASHBOARD</span></a>
+                                <ul aria-expanded="false" class="collapse">
+                                    @if(Auth::user()->perfil->m_dashboard)<li @click="menu=0"><a href="javascript:void(0)">GENERAL</a></li>@endif
+                                    @if(Auth::user()->perfil->m_dashboard_especifico)<li @click="menu=19"><a href="javascript:void(0)">ESPECIFICO</a></li>@endif
+                                </ul>
+                            </li>
+
                             @if(Auth::user()->perfil->m_sucursales)<li @click="menu=1"> <a class="waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="fa fa-building"></i><span class="hide-menu"> SUCURSALES</span></a></li>@endif
 
                             <li @if(!Auth::user()->perfil->m_perfiles && !Auth::user()->perfil->m_usuarios) class="d-none" @endif> 
-                                <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="fa fa fa-users"></i><span class="hide-menu"> USUARIOS</span></a>
+                                <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="fa fa-users"></i><span class="hide-menu"> USUARIOS</span></a>
                                 <ul aria-expanded="false" class="collapse">
                                     @if(Auth::user()->perfil->m_perfiles)<li @click="menu=17"><a href="javascript:void(0)">PERFILES</a></li>@endif
                                     @if(Auth::user()->perfil->m_usuarios)<li @click="menu=2"><a href="javascript:void(0)">USUARIOS</a></li>@endif
@@ -221,6 +228,13 @@
                     <ventas-categoria></ventas-categoria>
                 </template>
             @endif
+            @if(Auth::user()->perfil->m_dashboard_especifico)
+                <template v-if="menu==19">
+                    <dashboard-especifico></dashboard-especifico>
+                </template>
+            @endif
+
+            
 
 
             <br>

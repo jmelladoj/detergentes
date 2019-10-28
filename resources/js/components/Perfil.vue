@@ -199,7 +199,11 @@
                                         </div>
                                         <div class="custom-control custom-checkbox">
                                             <input type="checkbox" class="custom-control-input" id="m_dashboard" v-model="m_dashboard">
-                                            <label class="custom-control-label" for="m_dashboard">Dashboard</label>
+                                            <label class="custom-control-label" for="m_dashboard">GENERAL</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="m_dashboard_especifico" v-model="m_dashboard_especifico">
+                                            <label class="custom-control-label" for="m_dashboard_especifico">ESPECIFICO</label>
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
@@ -408,7 +412,8 @@
                 m_empresas: 0,
                 m_cotizaciones: 0,
                 m_ordenes_compra: 0,
-                por_categoria: 0
+                por_categoria: 0,
+                m_dashboard_especifico: 0
             }
         },
         computed:{
@@ -473,7 +478,8 @@
                     'm_empresas': this.m_empresas,
                     'm_cotizaciones': this.m_cotizaciones,
                     'm_ordenes_compra': this.m_ordenes_compra,
-                    'por_categoria': this.por_categoria
+                    'por_categoria': this.por_categoria,
+                    'm_dashboard_especifico': this.m_dashboard_especifico
                 }).then(function (response) {
                     me.cerrarModal();
                     me.listarPerfiles();
@@ -519,7 +525,8 @@
                     'm_cotizaciones': this.m_cotizaciones,
                     'm_ordenes_compra': this.m_ordenes_compra,
                     'perfil_id': this.perfil_id,
-                    'por_categoria': this.por_categoria
+                    'por_categoria': this.por_categoria,
+                    'm_dashboard_especifico': this.m_dashboard_especifico
                 }).then(function (response) {
                     me.cerrarModal();
                     me.listarPerfiles();
@@ -619,6 +626,7 @@
                 this.m_ordenes_compra = 0;
                 this.errorPerfil = 0;
                 this.por_categoria = 0;
+                this.m_dashboard_especifico = 0;
             },
             abrirModal(modelo, accion, data = []){
                 switch(modelo){
@@ -656,6 +664,7 @@
                                 this.m_cotizaciones = 0;
                                 this.m_ordenes_compra = 0;
                                 this.por_categoria = 0;
+                                this.m_dashboard_especifico = 0;
                                 this.tipoAccion = 1;
                                 break;
                             }
@@ -691,6 +700,7 @@
                                 this.m_cotizaciones = data['m_cotizaciones'];
                                 this.m_ordenes_compra = data['m_ordenes_compra'];
                                 this.por_categoria = data['por_categoria'];
+                                this.m_dashboard_especifico = data['m_dashboard_especifico'];
                                 this.perfil_id = data['id'];
                                 break;
                             }

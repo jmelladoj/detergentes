@@ -27,6 +27,7 @@ class SucursalController extends Controller
         $sucursal = new Sucursal();
         $sucursal->nombre = $request->nombre;
         $sucursal->direccion = $request->direccion;
+        $sucursal->stock_automatico = $request->stock_automatico;
         $sucursal->save();
 
         $productos = Producto::withTrashed()->get();
@@ -43,6 +44,7 @@ class SucursalController extends Controller
         $sucursal = Sucursal::findOrFail($request->sucursal_id);
         $sucursal->nombre = $request->nombre;
         $sucursal->direccion = $request->direccion;
+        $sucursal->stock_automatico = $request->stock_automatico;
         $sucursal->save();
     }
 

@@ -42,6 +42,7 @@ class CreatePerfilsTable extends Migration
             $table->boolean('m_normal')->default(false);
             $table->boolean('m_premium')->default(false);
             $table->boolean('m_pendientes')->default(false);
+            $table->boolean('m_dashboard_especifico')->default(false);
 
             $table->softDeletes();
             $table->timestamps();

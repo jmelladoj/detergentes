@@ -121,6 +121,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/venta/registrar', 'VentaController@registrarVenta');
     Route::get('/ventas/pendientes', 'VentaController@pendientes');
     Route::post('/venta/entrega', 'VentaController@entregar');
+    Route::get('/ventas/detalle/{id}', 'VentaController@indexDetalle');
+    Route::get('/ventas/detalle/productos/{id}', 'VentaController@indexDetalleProductos');
+    
     
 
     //Rutas de resumen

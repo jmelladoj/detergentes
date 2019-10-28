@@ -17,6 +17,7 @@ class CreateSucursalsTable extends Migration
             $table->bigIncrements('id');
             $table->string('nombre');
             $table->string('direccion');
+            $table->boolean('stock_automatico')->default(false);
             $table->softDeletes();
             $table->timestamps();
         });

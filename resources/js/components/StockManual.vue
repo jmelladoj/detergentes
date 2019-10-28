@@ -248,8 +248,8 @@
                 }
 
                 me.detalle_stock.forEach(function(item) {
-                    if(item.stock < 1 ){
-                        me.errores.push("La cantidad miníma de un producto es de 1.");
+                    if(item.stock < 0 ){
+                        me.errores.push("La cantidad miníma de un producto es de 0.");
                     }
                 });
 
