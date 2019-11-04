@@ -246,11 +246,11 @@
                                             <table id="cotizaciones" name="cotizaciones" class="table table-bordered table-striped">
                                                 <thead>
                                                     <tr align="center">
-                                                        <th class="col-4">PRODUCTO</th>
-                                                        <th class="col-2">CANTIDAD</th>
-                                                        <th class="col-2">UNIDAD</th>
-                                                        <th class="col-2">VALOR</th>
-                                                        <th class="col-2">ACCIÓN</th>
+                                                        <th>PRODUCTO</th>
+                                                        <th>CANTIDAD</th>
+                                                        <th>UNIDAD</th>
+                                                        <th>VALOR</th>
+                                                        <th>ACCIÓN</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -789,7 +789,7 @@
                             case 'registrar':
                             { 
                                 this.modal = 1;
-                                this.tituloModal = 'Registrar Cotización';
+                                this.tituloModal = 'Registrar Cotización ' + (this.cotizaciones.length + 1);
                                 this.tipoAccion = 1;
                                 this.limpiarFormulario();
                                 this.agregarFila();
@@ -798,7 +798,7 @@
                             case 'revisar':
                             {
                                 this.modal = 1;
-                                this.tituloModal = 'Detalle Cotización';
+                                this.tituloModal = 'Detalle Cotización ' + data['id'];
                                 this.tipoAccion = 2;
                                 this.listarDetalle(data['id']);
                                 this.neto = data['subtotal'];

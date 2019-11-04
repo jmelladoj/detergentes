@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Producto;
 use App\Documento;
 use App\Empresa;
 use Carbon\Carbon;
@@ -150,5 +151,24 @@ class DocumentoController extends Controller
         $detalle_documento = DetalleDocumento::where('documento_id', $id)->orderBy('created_at', 'ASC')->get();
 
         Mail::to($documento->empresa->correo)->send(new ordenDeCompra($documento, $detalle_documento));
+    }
+
+    public function confirmar(Request $request){
+        $detalle_documento = DetalleDocumento::find($request->id);
+        $producto = Producto::where('nombre', $detalle_documento->producto)->first();
+
+        switch ($request->accion) {
+            case 1:
+                $producto->stock += $detalle_documento->cantidad;
+                $detalle_documento->confirmado = 1;
+                break;
+            case 2:
+                $producto->stock -= $detalle_documento->cantidad;
+                $detalle_documento->confirmado = 0;
+                break;
+        }
+
+        $producto->save();
+        $detalle_documento->save();
     }
 }

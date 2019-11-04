@@ -144,6 +144,20 @@
                                 </div>
 
                                 <div v-show="detalle_venta.length > 0" class="form-group row">
+                                    <label for="" class="col-md-2 col-form-label">VUELTO</label>
+                                    
+                                    <label for="" class="col-md-2 col-form-label">¿Con cuánto paga?</label>
+                                    <div class="col-md-3">
+                                        <input type="number" v-model="pago_persona" class="form-control" min="0" @change="calcularVuelto()">
+                                    </div>
+
+                                    <label for="" class="col-md-2 col-form-label">DIFERENCIA</label>
+                                    <div class="col-md-3">
+                                        <input type="number" v-model="vuelto" class="form-control" readonly>
+                                    </div>
+                                </div>
+                                
+                                <div v-show="detalle_venta.length > 0" class="form-group row">
                                     <label for="" class="col-md-2 col-form-label">Observación de Venta</label>
                                     <textarea class="form-control col-md-10" v-model="observacion"></textarea>
                                 </div>
@@ -197,6 +211,8 @@
                 detalle_pago : [],
                 stock_sucursales : [],
                 errorVenta : 0,
+                pago_persona: 0,
+                vuelto: 0,
                 errores : []
             }
         },
@@ -554,6 +570,11 @@
 
                 return me.errorVenta;
             },
+            calcularVuelto(){
+                let me = this;
+
+                me.vuelto = me.pago_persona - me.total;
+            }
         },
         mounted() {
             this.listarProductos();

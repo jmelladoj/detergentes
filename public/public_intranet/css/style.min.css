@@ -47,7 +47,7 @@ html {
 @font-face {
     font-family: Poppins;
     font-style: normal;
-    font-weight: 300;
+    font-weight: 600;
     src: local('Poppins Light'), local('Poppins-Light'), url(https://fonts.gstatic.com/s/poppins/v5/D2gN9uyZ9Ucx1fJ1Fhb7sy3USBnSvpkopQaUR-2r7iU.ttf) format('truetype')
 }
 
@@ -16110,7 +16110,7 @@ legend {
 }
 
 .skin-blue-dark .left-sidebar .user-pro-body a.link {
-    color: #8d97ad
+    color: #000
 }
 
 .skin-default-dark .page-titles .breadcrumb .breadcrumb-item.active,
@@ -16153,7 +16153,7 @@ legend {
 }
 
 .skin-default-dark .left-sidebar .user-pro-body a.link {
-    color: #8d97ad
+    color: #000
 }
 
 .skin-green-dark .page-titles .breadcrumb .breadcrumb-item.active,
@@ -16196,7 +16196,7 @@ legend {
 }
 
 .skin-green-dark .left-sidebar .user-pro-body a.link {
-    color: #8d97ad
+    color: #000
 }
 
 .skin-red-dark .page-titles .breadcrumb .breadcrumb-item.active,
@@ -16239,7 +16239,7 @@ legend {
 }
 
 .skin-red-dark .left-sidebar .user-pro-body a.link {
-    color: #8d97ad
+    color: #000
 }
 
 .skin-megna-dark .page-titles .breadcrumb .breadcrumb-item.active,
@@ -16282,7 +16282,7 @@ legend {
 }
 
 .skin-megna-dark .left-sidebar .user-pro-body a.link {
-    color: #8d97ad
+    color: #000
 }
 
 .skin-purple-dark .page-titles .breadcrumb .breadcrumb-item.active,
@@ -16345,7 +16345,7 @@ section {
 }
 
 .skin-purple-dark .left-sidebar .user-pro-body a.link {
-    color: #8d97ad
+    color: #000
 }
 
 @media (min-width:768px) {
@@ -16395,7 +16395,7 @@ section {
     --green: #779f32;
     --teal: #20c997;
     --white: #fff;
-    --gray: #6c757d;
+    --gray: #000;
     --primary: #fb9678;
     --secondary: #f8f9fa;
     --success: #779f32;
@@ -16436,8 +16436,9 @@ html {
 body {
     font-family: Poppins, sans-serif;
     line-height: 1.5;
-    color: #212529;
+    color: #000;
     background-color: #edf1f5
+    
 }
 
 [tabindex="-1"]:focus {
@@ -16562,7 +16563,7 @@ table {
 caption {
     padding-top: 1rem;
     padding-bottom: 1rem;
-    color: #6c757d;
+    color: #000;
     caption-side: bottom
 }
 
@@ -16677,7 +16678,7 @@ legend {
 .display-2,
 .display-3,
 .display-4 {
-    font-weight: 300;
+    font-weight: 600;
     line-height: 1.2
 }
 
@@ -16707,7 +16708,7 @@ h5,
 h6 {
     margin-bottom: .5rem;
     font-family: Poppins, sans-serif;
-    font-weight: 300;
+    font-weight: 600;
     line-height: 1.2;
     color: inherit
 }
@@ -16820,7 +16821,7 @@ mark {
 .blockquote-footer {
     display: block;
     font-size: 80%;
-    color: #6c757d
+    color: #000
 }
 
 .blockquote-footer::before {
@@ -16845,7 +16846,7 @@ mark {
 
 .figure-caption {
     font-size: 90%;
-    color: #6c757d
+    color: #000
 }
 
 code,
@@ -18089,7 +18090,7 @@ pre code {
 }
 
 .form-control::placeholder {
-    color: #6c757d;
+    color: #000;
     opacity: 1
 }
 
@@ -18243,7 +18244,7 @@ select.form-control-lg:not([size]):not([multiple]) {
 }
 
 .form-check-input:disabled~.form-check-label {
-    color: #6c757d
+    color: #000
 }
 
 .form-check-inline {
@@ -19246,7 +19247,7 @@ fieldset:disabled a.btn {
 
 .btn-link.disabled,
 .btn-link:disabled {
-    color: #6c757d
+    color: #000
 }
 
 .btn-group-lg>.btn,
@@ -19474,7 +19475,7 @@ tbody.collapse.show {
 
 .dropdown-item.disabled,
 .dropdown-item:disabled {
-    color: #6c757d;
+    color: #000;
     background-color: transparent
 }
 
@@ -19486,7 +19487,7 @@ tbody.collapse.show {
     display: block;
     padding: .5rem 1.5rem;
     font-size: .76563rem;
-    color: #6c757d
+    color: #000
 }
 
 .btn-group,
@@ -19752,7 +19753,7 @@ tbody.collapse.show {
 }
 
 .custom-control-input:disabled~.custom-control-label {
-    color: #6c757d
+    color: #000
 }
 
 .custom-control-input:disabled~.custom-control-label::before {
@@ -19862,7 +19863,7 @@ tbody.collapse.show {
 }
 
 .custom-select:disabled {
-    color: #6c757d;
+    color: #000;
     background-color: #e9ecef
 }
 
@@ -19951,7 +19952,7 @@ tbody.collapse.show {
 }
 
 .nav-link.disabled {
-    color: #6c757d
+    color: #000
 }
 
 .nav-tabs {
@@ -19974,7 +19975,7 @@ tbody.collapse.show {
 }
 
 .nav-tabs .nav-link.disabled {
-    color: #6c757d;
+    color: #000;
     background-color: transparent;
     border-color: transparent
 }
@@ -20655,7 +20656,7 @@ tbody.collapse.show {
     display: inline-block;
     padding-right: .5rem;
     padding-left: .5rem;
-    color: #6c757d;
+    color: #000;
     content: "/"
 }
 
@@ -20664,7 +20665,7 @@ tbody.collapse.show {
 }
 
 .breadcrumb-item.active {
-    color: #6c757d
+    color: #000
 }
 
 .pagination {
@@ -20719,7 +20720,7 @@ tbody.collapse.show {
 }
 
 .page-item.disabled .page-link {
-    color: #6c757d;
+    color: #000;
     pointer-events: none;
     cursor: auto;
     background-color: #fff;
@@ -21181,7 +21182,7 @@ tbody.collapse.show {
 
 .list-group-item.disabled,
 .list-group-item:disabled {
-    color: #6c757d;
+    color: #000;
     background-color: #fff
 }
 
@@ -24672,7 +24673,7 @@ a.text-purple:hover {
 }
 
 .text-muted {
-    color: #6c757d!important
+    color: #000!important
 }
 
 .text-hide {
@@ -28805,9 +28806,9 @@ ul.list-style-none li a:hover {
 }
 
 .card .card-subtitle {
-    font-weight: 300;
+    font-weight: 600;
     margin-bottom: 15px;
-    color: #6c757d
+    color: #000
 }
 
 .card .card-title {
@@ -29158,7 +29159,7 @@ ul.list-style-none li a:hover {
 }
 
 .sidebar-nav ul li a {
-    color: #8d97ad;
+    color: #000;
     padding: 10px 35px 10px 15px;
     display: block;
     align-items: center;
@@ -29194,7 +29195,7 @@ ul.list-style-none li a:hover {
     font-size: 12px;
     margin-bottom: 0;
     padding: 30px 14px 14px 0;
-    color: #6c757d;
+    color: #000;
     font-weight: 500
 }
 
@@ -29214,7 +29215,7 @@ ul.list-style-none li a:hover {
     font-size: 16px;
     display: inline-block;
     vertical-align: middle;
-    color: #787f91
+    color: #000;
 }
 
 .sidebar-nav>ul>li {
@@ -29250,7 +29251,7 @@ table th {
     height: 7px;
     border-width: 1px 0 0 1px;
     border-style: solid;
-    border-color: #8d97ad;
+    border-color: #000;
     right: 20px;
     -webkit-transform: rotate(135deg) translate(0, -50%);
     -ms-transform: rotate(135deg) translate(0, -50%);
@@ -29367,7 +29368,7 @@ ul#themecolors li a.working:before {
 }
 
 .default-theme {
-    background: #6c757d
+    background: #000
 }
 
 .green-theme {
@@ -29396,9 +29397,9 @@ ul#themecolors li a.working:before {
 
 .default-dark-theme {
     background: #343a40;
-    background: -moz-linear-gradient(left, #343a40 0, #343a40 23%, #6c757d 23%, #6c757d 99%);
-    background: -webkit-linear-gradient(left, #343a40 0, #343a40 23%, #6c757d 23%, #6c757d 99%);
-    background: linear-gradient(to right, #343a40 0, #343a40 23%, #6c757d 23%, #6c757d 99%)
+    background: -moz-linear-gradient(left, #343a40 0, #343a40 23%, #000 23%, #000 99%);
+    background: -webkit-linear-gradient(left, #343a40 0, #343a40 23%, #000 23%, #000 99%);
+    background: linear-gradient(to right, #343a40 0, #343a40 23%, #000 23%, #000 99%)
 }
 
 .green-dark-theme {
@@ -30033,7 +30034,7 @@ html body .navbar-dark .mailbox .message-center a div {
 }
 
 .color-table.muted-table thead th {
-    background-color: #6c757d;
+    background-color: #000;
     color: #fff
 }
 
@@ -30112,11 +30113,11 @@ html body .navbar-dark .mailbox .message-center a div {
 }
 
 .color-bordered-table.muted-bordered-table {
-    border: 2px solid #6c757d
+    border: 2px solid #000
 }
 
 .color-bordered-table.muted-bordered-table thead th {
-    background-color: #6c757d;
+    background-color: #000;
     color: #fff
 }
 
@@ -31353,7 +31354,7 @@ html body .navbar-dark .mailbox .message-center a .mail-contnet .time {
 .city-weather-days li span {
     display: block;
     padding: 10px 0 0;
-    color: #6c757d
+    color: #000
 }
 
 .city-weather-days li i {
@@ -31363,7 +31364,7 @@ html body .navbar-dark .mailbox .message-center a .mail-contnet .time {
 }
 
 .city-weather-days li h3 {
-    font-weight: 300;
+    font-weight: 600;
     margin-top: 5px
 }
 
@@ -31418,7 +31419,7 @@ html body .navbar-dark .mailbox .message-center a .mail-contnet .time {
 .comment-footer .action-icons a {
     padding-left: 7px;
     vertical-align: middle;
-    color: #6c757d
+    color: #000
 }
 
 .comment-footer .action-icons a.active,
@@ -31504,7 +31505,7 @@ html body .navbar-dark .mailbox .message-center a .mail-contnet .time {
 }
 
 .chat-list li .chat-content h5 {
-    color: #6c757d
+    color: #000
 }
 
 .chat-list li .chat-content .box {
@@ -31516,7 +31517,7 @@ html body .navbar-dark .mailbox .message-center a .mail-contnet .time {
 .chat-list li .chat-time {
     display: block;
     font-size: 10px;
-    color: #6c757d;
+    color: #000;
     margin: 5px 0 15px 65px
 }
 
@@ -31588,7 +31589,7 @@ html body .navbar-dark .mailbox .message-center a .mail-contnet .time {
 .fc th.fc-widget-header {
     color: #212529;
     font-size: 13px;
-    font-weight: 300;
+    font-weight: 600;
     line-height: 20px;
     padding: 7px 0;
     text-transform: uppercase
@@ -31720,7 +31721,7 @@ html body .navbar-dark .mailbox .message-center a .mail-contnet .time {
 
 .sl-date {
     font-size: 10px;
-    color: #6c757d
+    color: #000
 }
 
 .time-item {
@@ -31892,7 +31893,7 @@ html body .navbar-dark .mailbox .message-center a .mail-contnet .time {
 
 .profiletimeline .sl-date {
     font-size: 12px;
-    color: #6c757d
+    color: #000
 }
 
 .profiletimeline .time-item {
@@ -31954,7 +31955,7 @@ html body .navbar-dark .mailbox .message-center a .mail-contnet .time {
 }
 
 .little-profile .soc-pro a {
-    color: #6c757d
+    color: #000
 }
 
 .little-profile .soc-pro a:hover {

@@ -50,6 +50,7 @@ class VentaController extends Controller
         $tarjeta_debito = 0;
         $cheque = 0;
         $transferencia = 0;
+        $total = 0;
 
         foreach($ventas as $venta){
             foreach($venta->pago as $detalle){
@@ -70,6 +71,8 @@ class VentaController extends Controller
                         $transferencia += $detalle->monto_pago;
                         break;
                 }
+
+                $total += $detalle->monto_pago;
             }
         }
 
@@ -78,7 +81,8 @@ class VentaController extends Controller
             'tarjeta_credito' => $tarjeta_credito,
             'tarjeta_debito' => $tarjeta_debito,
             'cheque' => $cheque,
-            'transferencia' => $transferencia
+            'transferencia' => $transferencia,
+            'total' => $total
         ];
 
     }

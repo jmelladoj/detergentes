@@ -47,6 +47,7 @@
                                         <th>TARJETA DEBITO</th>
                                         <th>CHEQUE</th>
                                         <th>TRANSFERENCIA ELÉCTRONICA</th>
+                                        <th>TOTAL</th>
                                     </thead>
                                     <tbody>
                                         <tr align="center">
@@ -55,6 +56,7 @@
                                             <td v-text="'$' + medios_pago.tarjeta_debito"></td>
                                             <td v-text="'$' + medios_pago.cheque"></td>
                                             <td v-text="'$' + medios_pago.transferencia"></td>
+                                            <td v-text="'$' + medios_pago.total"></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -207,7 +209,8 @@
                     tarjeta_credito: 0,
                     tarjeta_debito: 0,
                     cheque: 0,
-                    transferencia: 0
+                    transferencia: 0,
+                    total: 0
                 },
                 venta_id: 0,
                 ventas : [],
@@ -261,6 +264,7 @@
                     me.medios_pago.tarjeta_debito = respuesta.tarjeta_debito;
                     me.medios_pago.cheque = respuesta.cheque;
                     me.medios_pago.transferencia = respuesta.transferencia;
+                    me.medios_pago.total = respuesta.total;
                 })
                 .catch(function (error) {
                     console.log(error.response.data);

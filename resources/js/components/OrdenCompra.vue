@@ -325,10 +325,11 @@
                                             <table id="cotizaciones" name="cotizaciones" class="table table-bordered table-striped">
                                                 <thead>
                                                     <tr align="center">
-                                                        <th class="col-6">PRODUCTO</th>
-                                                        <th class="col-2">CANTIDAD</th>
-                                                        <th class="col-2">UNIDAD</th>
-                                                        <th class="col-2">VALOR</th>
+                                                        <th>PRODUCTO</th>
+                                                        <th>CANTIDAD</th>
+                                                        <th>UNIDAD</th>
+                                                        <th>VALOR</th>
+                                                        <th>ACCIÓN</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -344,6 +345,15 @@
                                                         </td>
                                                         <td>
                                                             <input type="number" class="form-control" :value="item.valor" readonly> 
+                                                        </td>
+                                                        <td align="center">
+                                                            <b-button v-if="item.confirmado" variant="danger" v-b-tooltip.hover title="Anular producto" @click="confirmarStock(item.id, 2)" class="btn-circle">
+                                                                <i class="fa fa-times"></i>
+                                                            </b-button>
+
+                                                            <b-button v-else variant="success" v-b-tooltip.hover title="Confirmar producto" @click="confirmarStock(item.id, 1)" class="btn-circle">
+                                                                <i class="icon-check"></i>
+                                                            </b-button>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -718,6 +728,45 @@
                 }
                 }) 
             },
+            confirmarStock(id, accion){
+               swal({
+                title: accion == 2 ? '¿Esta seguro de anular el stock?' : '¿Esta seguro de confirmar el stock?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Aceptar!',
+                cancelButtonText: 'Cancelar',
+                confirmButtonClass: 'btn btn-success',
+                cancelButtonClass: 'btn btn-danger',
+                buttonsStyling: false,
+                reverseButtons: true
+                }).then((result) => {
+                if (result.value) {
+                    let me = this;
+
+                    var mensaje_uno = accion == 2 ? 'Stock anulado' : 'Stock confirmado';
+                    var mensaje_dos = accion == 2 ? 'Se ha quitado el stock del inventario' : 'Se ha añadido el stock al inventario';
+
+                    axios.post('/documento/confirmar',{
+                        'id': id,
+                        'accion': accion
+                    }).then(function (response) {
+                        me.listarDetalle(me.documento_id);
+                        swal(
+                        mensaje_uno, mensaje_dos,
+                        'success'
+                        );
+                    }).catch(function (error) {
+                        console.log(error.response.data);
+                    });
+                } else if (
+                    result.dismiss === swal.DismissReason.cancel
+                ) {
+                    
+                }
+                }) 
+            },
             validarCotizacion(){
                 this.errorCotizacion=0;
                 this.errores =[];
@@ -763,6 +812,7 @@
                 this.valor = [];
                 this.detalle_documento = [];
                 this.observacion = '';
+                this.documento_id = 0;
             },
             cerrarModal(){
                 this.modal = 0;
@@ -778,7 +828,7 @@
                             case 'registrar':
                             { 
                                 this.modal = 1;
-                                this.tituloModal = 'Registrar Orden de Compra';
+                                this.tituloModal = 'Registrar Orden de Compra ' + (this.cotizaciones.length + 1);;
                                 this.tipoAccion = 1;
                                 this.limpiarFormulario();
                                 this.agregarFila();
@@ -787,12 +837,14 @@
                             case 'revisar':
                             {
                                 this.modal = 1;
-                                this.tituloModal = 'Detalle Orden de Compra';
+                                this.tituloModal = 'Detalle Orden de Compra ' + data['id'];
                                 this.tipoAccion = 2;
                                 this.listarDetalle(data['id']);
                                 this.neto = data['subtotal'];
                                 this.iva = data['total'] - data['subtotal'];
                                 this.total = data['total'];
+
+                                this.documento_id = data['id'];
                                 break;
                             }
                         }

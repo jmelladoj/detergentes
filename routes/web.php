@@ -102,6 +102,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/documento/cotizacion/{id}/enviar', 'DocumentoController@enviarCotizacion');
     Route::get('/documento/ordenCompra/{id}/descargar', 'DocumentoController@descargarOrdenCompra');
     Route::get('/documento/ordenCompra/{id}/enviar', 'DocumentoController@enviarOrdenDeCompra');
+    Route::post('/documento/confirmar', 'DocumentoController@confirmar');
 
     //Rutas de clientes
     Route::get('/clientes', 'ClienteController@index');
