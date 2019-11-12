@@ -111,7 +111,7 @@
 </head>
 <body>
     <div class="header">
-        <center><h2>ORDEN DE COMPRA</h2></center>
+        <center><h2>ORDEN DE COMPRA {{ $documento->id }}</h2></center>
         <br>
         <div class="izquierda">
             <center><img src="{{ asset('public_intranet/images/Logo-procleaning.png') }}" alt="" height="70px"></center>

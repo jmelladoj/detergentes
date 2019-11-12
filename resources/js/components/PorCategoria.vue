@@ -80,7 +80,11 @@
                                             :sort-desc.sync="sortDesc"
                                             :sort-direction="sortDirection"
                                             @filtered="onFiltered"
-                                            >
+                                            >   
+
+                                            <template slot="nombre_categoria" slot-scope="row">
+                                                {{ row.item.categoria.nombre + ' - ' + row.item.nombre }}
+                                            </template>
 
                                             <template slot="cantidad" slot-scope="row">
                                                 <div class="col-12" v-for="sucursal in sucursales" :key="sucursal.id"  v-text="sucursal.nombre + ' : ' + obtenerStock(row.item.id, sucursal.id) "></div>
@@ -124,7 +128,7 @@
                 items: items,
                 fields: [
                     { key: 'id', label: 'NUM', sortable: true, sortDirection: 'desc', class: 'text-center align-middle' },
-                    { key: 'nombre', label: 'CATEGORÍA', sortable: true, class: 'text-left align-middle' },
+                    { key: 'nombre_categoria', label: 'CATEGORÍA', sortable: true, class: 'text-left align-middle' },
                     { key: 'ventaSemana', label: 'VENTA SEMANAL', sortable: true, class: 'text-center align-middle' },
                 ],
                 currentPage: 1,

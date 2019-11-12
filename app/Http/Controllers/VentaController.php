@@ -113,7 +113,7 @@ class VentaController extends Controller
             $venta->descuento = $request->descuento;
             $venta->total = $request->total;
             $venta->fecha = $fecha;
-            $venta->tipo_documento = 0;
+            $venta->tipo_documento = $request->tipo_documento;
             $venta->sucursal_id  = $request->sucursal_id;
             $venta->observacion  = $request->observacion;
             $venta->estado = $sucursal->stock_automatico == 1 ? 2 : 1;

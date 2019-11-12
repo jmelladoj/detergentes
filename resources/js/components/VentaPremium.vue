@@ -55,9 +55,9 @@
 
                                 <div v-show="cliente_id" class="form-group row">
                                     <label for="" class="col-md-2 col-form-label">ITEM</label>
-                                    <div class="col-md-10">
+                                    <div class="col-md-4">
                                         <vue-bootstrap-typeahead
-                                            ref="typeahead"
+                                            ref="producto"
                                             :data="productos"
                                             v-model="producto_nombre"
                                             :serializer="p => p.nombre"
@@ -65,6 +65,18 @@
                                             @hit="productoSeleccionado($event)"
                                         />
                                     </div>
+
+                                    <label for="" class="col-md-2 col-form-label">TIPO DOCUMENTO</label>
+                                    <div class="col-md-4">
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" id="boleta" name="tipo_documento" class="custom-control-input" v-model="tipo_documento" checked value="1">
+                                            <label class="custom-control-label" for="boleta">Boleta</label>
+                                        </div>
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" id="factura" name="tipo_documento" class="custom-control-input" v-model="tipo_documento" value="2">
+                                            <label class="custom-control-label" for="factura">Factura</label>
+                                        </div>
+                                    </div>       
                                 </div>
 
                                 <div v-show="detalle_venta.length > 0" class="form-group row">
@@ -98,7 +110,7 @@
                                         <input type="number" v-model="subtotal" class="form-control" readonly>
                                     </div>
                                     
-                                    <label for="" class="col-md-2 col-form-label">% DESCUENTO</label>
+                                    <label for="" class="col-md-2 col-form-label">DESCUENTO</label>
                                     <div class="col-md-2">
                                         <input type="number" v-model="descuento" class="form-control" min="0" max="100">
                                     </div>
@@ -213,6 +225,7 @@
                 errorVenta : 0,
                 pago_persona: 0,
                 vuelto: 0,
+                tipo_documento: '1',
                 errores : []
             }
         },
@@ -237,13 +250,24 @@
             onBarcodeScanned (barcode) {
                 let me = this;
 
+                this.$refs.producto.inputValue = "";
+
                 var producto = me.productos.find(function(p) {
                     return p.codigo == barcode;
                 });
 
+                console.log(barcode);
+
                 var p = me.detalle_venta.find(function(d) {
                     return d.producto_id == producto.id;
                 });
+
+                if(producto){
+                    var l = me.lista.find(function(l) {
+                        return l.producto_id == producto.id;
+                    });
+                }
+                
 
                 if(p){
                     me.limitarStock(me.detalle_venta.indexOf(p));
@@ -254,7 +278,15 @@
                     item['producto_id'] = producto.id;
                     item['producto_nombre'] = producto.nombre;
                     item['cantidad'] = 1;
-                    item['producto_valor'] = producto.precio_normal;
+
+                    if(l){
+                        item['lista'] = 1;
+                        item['producto_valor'] = l.precio_normal;
+                    } else {
+                        item['lista'] = 0;
+                        item['producto_valor'] = producto.precio_normal;
+                    }
+
                     item['producto_valor_normal'] = producto.precio_normal;
                     item['producto_valor_mayorista'] = producto.precio_mayorista;
                     item['cantidad_mayorista'] = producto.cantidad_mayorista;
@@ -262,6 +294,8 @@
 
                     me.detalle_venta.push(item);
                 }
+
+                me.resetBarcode();
             },
             resetBarcode () {
                 let barcode = this.$barcodeScanner.getPreviousCode()
@@ -285,7 +319,6 @@
                 me.erroresStock = [];
 
                 me.producto_nombre = "";
-                this.$refs.typeahead.inputValue = "";
 
             },
             cambiarValorProducto(index, estado){
@@ -420,7 +453,7 @@
                 });
 
                 me.subtotal = subtotal;
-                me.total = parseInt(subtotal * (1 - (me.descuento / 100)));
+                me.total = parseInt(subtotal - me.descuento);
                 me.detalle_pago[0].a_pagar = me.total;
             },
             agregarMedioPago(monto = 0){
@@ -480,6 +513,7 @@
                 me.detalle_pago = [];
                 me.errorVenta = 0;
                 me.observacion = "";
+                me.tipo_documento = '1';
                 me.errores = [];
                 me.agregarMedioPago();
             },
@@ -512,7 +546,8 @@
                         'total' : me.total,
                         'detalle_venta' : me.detalle_venta,
                         'detalle_pago' : me.detalle_pago,
-                        'observacion' : me.observacion
+                        'observacion' : me.observacion,
+                        'tipo_documento': me.tipo_documento
                     }).then(function (response) {
                         swal(
                         'Venta realizada!',
@@ -536,7 +571,7 @@
                 me.errorVenta = 0;
                 me.errores = [];
 
-                if (me.descuento < 0 || me.descuento > 100) me.errores.push("El descuento debe de estar en el rango de 0 a 100.");
+                if (me.descuento < 0) me.errores.push("El descuento debe no puede ser menor a 0");
                 
                 me.detalle_venta.forEach(function(item) {
                     if(item.cantidad < 1 ){

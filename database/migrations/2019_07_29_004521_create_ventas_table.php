@@ -19,7 +19,7 @@ class CreateVentasTable extends Migration
             $table->integer('descuento');
             $table->integer('total');
             $table->string('fecha');
-            $table->integer('tipo_documento');
+            $table->integer('tipo_documento')->nullable()->default(1);
             $table->text('observacion')->nullable();
 
             $table->unsignedBigInteger('sucursal_id');

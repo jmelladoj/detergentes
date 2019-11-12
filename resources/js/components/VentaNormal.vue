@@ -42,7 +42,7 @@
 
                                 <div class="form-group row">
                                     <label for="" class="col-md-2 col-form-label">ITEM</label>
-                                    <div class="col-md-10">
+                                    <div class="col-md-4">
                                         <vue-bootstrap-typeahead
                                             ref="typeahead"
                                             :data="productos"
@@ -53,6 +53,18 @@
                                             @hit="productoSeleccionado($event)"
                                         />
                                     </div>
+
+                                    <label for="" class="col-md-2 col-form-label">TIPO DOCUMENTO</label>
+                                    <div class="col-md-4">
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" id="boleta" name="tipo_documento" class="custom-control-input" v-model="tipo_documento" checked value="1">
+                                            <label class="custom-control-label" for="boleta">Boleta</label>
+                                        </div>
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" id="factura" name="tipo_documento" class="custom-control-input" v-model="tipo_documento" value="2">
+                                            <label class="custom-control-label" for="factura">Factura</label>
+                                        </div>
+                                    </div>       
                                 </div>
 
                                 <div v-show="detalle_venta.length > 0" class="form-group row">
@@ -86,7 +98,7 @@
                                         <input type="number" v-model="subtotal" class="form-control" readonly>
                                     </div>
                                     
-                                    <label for="" class="col-md-2 col-form-label">% DESCUENTO</label>
+                                    <label for="" class="col-md-2 col-form-label">DESCUENTO</label>
                                     <div class="col-md-2">
                                         <input type="number" v-model="descuento" class="form-control" min="0" max="100">
                                     </div>
@@ -198,6 +210,7 @@
                 errorVenta : 0,
                 pago_persona: 0,
                 vuelto: 0,
+                tipo_documento: "1",
                 errores : []
             }
         },
@@ -221,6 +234,8 @@
         methods : {
             onBarcodeScanned (barcode) {
                 let me = this;
+
+                this.$refs.typeahead.inputValue = "";
 
                 var producto = me.productos.find(function(p) {
                     return p.codigo == barcode;
@@ -366,7 +381,7 @@
                 });
 
                 me.subtotal = subtotal;
-                me.total = parseInt(subtotal * (1 - (me.descuento / 100)));
+                me.total = parseInt(subtotal - me.descuento);
                 me.detalle_pago[0].a_pagar = me.total;
             },
             agregarMedioPago(monto = 0){
@@ -426,6 +441,7 @@
                 me.detalle_pago = [];
                 me.pago_persona = 0;
                 me.vuelto = 0;
+                me.tipo_documento = "1";
                 me.errorVenta = 0;
                 me.observacion = "";
                 me.errores = [];
@@ -460,7 +476,8 @@
                         'total' : me.total,
                         'detalle_venta' : me.detalle_venta,
                         'detalle_pago' : me.detalle_pago,
-                        'observacion' : me.observacion
+                        'observacion' : me.observacion,
+                        'tipo_documento': me.tipo_documento
                     }).then(function (response) {
                         swal(
                         'Venta realizada!',
@@ -484,7 +501,7 @@
                 me.errorVenta = 0;
                 me.errores = [];
 
-                if (me.descuento < 0 || me.descuento > 100) me.errores.push("El descuento debe de estar en el rango de 0 a 100.");
+                if (me.descuento < 0) me.errores.push("El descuento debe no puede ser menor a 0");
                 
                 me.detalle_venta.forEach(function(item) {
                     if(item.cantidad < 1 ){
