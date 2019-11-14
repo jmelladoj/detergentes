@@ -60,7 +60,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/subCategoria/registrar', 'SubCategoriaController@guardarSubCategoria');
     Route::post('/subCategoria/eliminar', 'SubCategoriaController@eliminarSubCategoria');
     Route::post('/subCategoria/restaurar', 'SubCategoriaController@restaurarSubCategoria');
-    Route::get('/subcategorias/ventas', 'SubCategoriaController@informeVentas');
+    Route::get('/subcategorias/ventas/{inicio}/{termino}', 'SubCategoriaController@informeVentas');
     
 
     //Rutas de categorías
@@ -118,12 +118,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/productoLista/eliminar', 'ListaClienteController@eliminarProductoListaCliente');
 
     //Rutas de ventas
-    Route::get('/ventas', 'VentaController@index');
+    Route::get('/ventas/{inicio}/{termino}', 'VentaController@index');
     Route::post('/venta/registrar', 'VentaController@registrarVenta');
     Route::get('/ventas/pendientes', 'VentaController@pendientes');
     Route::post('/venta/entrega', 'VentaController@entregar');
-    Route::get('/ventas/detalle/{id}', 'VentaController@indexDetalle');
-    Route::get('/ventas/detalle/productos/{id}', 'VentaController@indexDetalleProductos');
+    Route::get('/ventas/detalle/{id}/{inicio}/{termino}', 'VentaController@indexDetalle');
+    Route::get('/ventas/detalle/productos/{id}/{inicio}/{termino}', 'VentaController@indexDetalleProductos');
     
     
 

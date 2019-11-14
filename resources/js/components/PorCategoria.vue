@@ -19,6 +19,16 @@
                 <div class="col-lg-12 col-md-12">
                     <div class="card">
                         <div class="card-body">
+                            <filtro-fechas @inicio="fechaInicio" @termino="fechaTermino" v-on:metodo_uno="listarVentas()"></filtro-fechas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <div class="card">
+                        <div class="card-body">
                             <div class="form-group row">
                                 <template>
                                     <div class="table-responsive">
@@ -152,6 +162,12 @@
             }
         },
         methods : {
+            fechaInicio(value){
+                this.inicio = value;
+            },
+            fechaTermino(value){
+                this.termino = value;
+            },
             onFiltered(filteredItems) {
                 // Trigger pagination to update the number of buttons/pages due to filtering
                 this.totalRows = filteredItems.length
@@ -159,7 +175,7 @@
             },
             listarVentas(){
                 let me=this;
-                var url= '/subcategorias/ventas';
+                var url= '/subcategorias/ventas/' + me.inicio + '/' + me.termino;
                 axios.get(url).then(function (response) {
                     var respuesta= response.data;
                     me.ventas = respuesta.ventas;
@@ -169,9 +185,6 @@
                     console.log(error.response.data);
                 });
             }
-        },
-        mounted() {
-            this.listarVentas();
         }
     }
 </script>

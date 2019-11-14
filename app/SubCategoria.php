@@ -19,11 +19,9 @@ class SubCategoria extends Model
         return $this->belongsTo('App\Categoria', 'categoria_id');
     }
 
-    public function ventaSemanal(){
+    public function ventaSemanal($inicio, $termino){
         $total = 0;
-        $lunes = Carbon::parse('monday this week')->format('Y-m-d');
-        $domingo = Carbon::parse('sunday this week')->format('Y-m-d');
-        $ventas = Venta::whereBetween('fecha', [$lunes, $domingo])->get();
+        $ventas = Venta::whereBetween('fecha', [$inicio, $termino])->where('estado', 2)->get();
 
         foreach($ventas AS $item){
             $detalle = DetalleVenta::where('venta_id', $item->id)->get();

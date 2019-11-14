@@ -19,6 +19,16 @@
                 <div class="col-lg-12 col-md-12">
                     <div class="card">
                         <div class="card-body">
+                            <filtro-fechas @inicio="fechaInicio" @termino="fechaTermino" v-on:metodo_uno="listarVentas()" v-on:metodo_dos="listarDetalleSucursal()"></filtro-fechas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <div class="card">
+                        <div class="card-body">
                             <div class="form-group row">                           
                                 <label for="" class="col-md-2 col-form-label">SUCURSAL</label>
                                 <div class="col-md-10">
@@ -200,6 +210,8 @@
 
         data (){
             return {
+                inicio: '',
+                termino: '',
                 sucursal: {
                     id: 1
                 },
@@ -243,6 +255,12 @@
             }
         },
         methods : {
+            fechaInicio(value){
+                this.inicio = value;
+            },
+            fechaTermino(value){
+                this.termino = value;
+            },
             listarSucursales(){
                 let me=this;
                 var url= '/sucursales';
@@ -256,7 +274,7 @@
             },
             listarDetalleSucursal(){
                 let me=this;
-                var url= '/ventas/detalle/' + me.sucursal.id;
+                var url= '/ventas/detalle/'  + me.sucursal.id + '/' + me.inicio + '/' + me.termino ;
                 axios.get(url).then(function (response) {
                     var respuesta = response.data;
                     me.medios_pago.efectivo = respuesta.efectivo;
@@ -281,7 +299,7 @@
             },
             listarVentas(){
                 let me=this;
-                var url= '/ventas/detalle/productos/'  + me.sucursal.id;
+                var url= '/ventas/detalle/productos/'  + me.sucursal.id + '/' + me.inicio + '/' + me.termino ;
                 axios.get(url).then(function (response) {
                     var respuesta= response.data;
                     me.ventas = respuesta.ventas;
@@ -313,16 +331,11 @@
                 } else {
                     return 'Producto desconocido';
                 }
-
-                
             }
         },
         mounted() {
-            let me = this;
             this.listarSucursales();
-            this.listarDetalleSucursal();
             this.listarProductos();
-            this.listarVentas();
         }
     }
 </script>

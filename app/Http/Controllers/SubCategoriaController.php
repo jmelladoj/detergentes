@@ -19,13 +19,13 @@ class SubCategoriaController extends Controller
         ]; 
     }
 
-    public function informeVentas(Request $request){
+    public function informeVentas(Request $request, $inicio, $termino){
         if (!$request->ajax()) return redirect('/');
         
         $ventas = SubCategoria::with('categoria')->orderBy('nombre', 'asc')->get();
 
         foreach($ventas AS $venta){
-            $venta->ventaSemana = $venta->ventaSemanal();
+            $venta->ventaSemana = $venta->ventaSemanal($inicio, $termino);
         }
 
         return [

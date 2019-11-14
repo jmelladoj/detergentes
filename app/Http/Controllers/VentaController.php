@@ -15,22 +15,10 @@ use App\Sucursal;
 class VentaController extends Controller
 {
     //
-    public function index(Request $request){
+    public function index(Request $request, $inicio, $termino){
         if (!$request->ajax()) return redirect('/');
         
-        $ventas = Venta::orderBy('id', 'DESC')->get();
-
-        return [
-            'ventas' => $ventas
-        ];
-    }
-
-    public function indexDetalleProductos (Request $request, $id){
-        if (!$request->ajax()) return redirect('/');
-
-        $fecha = Carbon::now()->format('Y-m-d');
-
-        $ventas = Venta::where('estado', 2)->whereDate('fecha', $fecha)->where('sucursal_id', $id)->orderBy('id', 'DESC')->with('detalle', 'pago')->get();
+        $ventas = Venta::whereBetween('fecha', [$inicio, $termino])->where('estado', 2)->orderBy('id', 'DESC')->get();
 
         return [
             'ventas' => $ventas
@@ -38,12 +26,23 @@ class VentaController extends Controller
     }
 
 
-    public function indexDetalle(Request $request, $id){
+    public function indexDetalleProductos (Request $request, $id, $inicio, $termino){
         if (!$request->ajax()) return redirect('/');
 
-        $fecha = Carbon::now()->format('Y-m-d');
 
-        $ventas = Venta::where('estado', 2)->whereDate('fecha', $fecha)->where('sucursal_id', $id)->get();
+        $ventas = Venta::where('estado', 2)->whereBetween('fecha', [$inicio, $termino])->where('sucursal_id', $id)->orderBy('id', 'DESC')->with('detalle', 'pago')->get();
+
+        return [
+            'ventas' => $ventas
+        ];
+    }
+
+
+    public function indexDetalle(Request $request, $id, $inicio, $termino){
+        if (!$request->ajax()) return redirect('/');
+
+
+        $ventas = Venta::where('estado', 2)->whereBetween('fecha', [$inicio, $termino])->where('sucursal_id', $id)->get();
 
         $efectivo = 0;
         $tarjeta_credito = 0;
