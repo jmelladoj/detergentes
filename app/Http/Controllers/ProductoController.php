@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Producto;
 use App\Sucursal;
 use App\StockSucursal;
+use Illuminate\Support\Facades\Auth;
 
 class ProductoController extends Controller
 {
@@ -136,9 +137,9 @@ class ProductoController extends Controller
         $producto->save();
 
         if($request->accion == 1){
-            LogStockRegistro::create(['mensaje' => \Auth::user()->name . ' ha ingresado ' . $total_stock . ' productos a ' . $producto->nombre]);
+            LogStockRegistro::create(['mensaje' => Auth::user()->name . ' ha ingresado ' . $total_stock . ' productos a ' . $producto->nombre]);
         } else if($request->accion == 2){
-            LogStockRegistro::create(['mensaje' => \Auth::user()->name . ' ha quitado ' . $total_stock . ' productos a ' . $producto->nombre]);
+            LogStockRegistro::create(['mensaje' => Auth::user()->name . ' ha quitado ' . $total_stock . ' productos a ' . $producto->nombre]);
         }
         
     }

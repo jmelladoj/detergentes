@@ -256,7 +256,14 @@
                                                 <tbody>
                                                     <tr v-for="(item, index) in detalle" :key="index" :id="index">
                                                         <td>
-                                                            <input type="text" class="form-control" v-model="detalle[index]"> 
+                                                            <vue-bootstrap-typeahead
+                                                                ref="producto"
+                                                                :data="productos"
+                                                                v-model="detalle[index]"
+                                                                :serializer="p => p.nombre"
+                                                                placeholder="Buscar ..."
+                                                                @hit="productoSeleccionado($event, index)"
+                                                            />
                                                         </td>
                                                         <td>
                                                             <input type="number" class="form-control" v-model="cantidad[index]" @blur="obtenerTotales()">
@@ -420,6 +427,7 @@
                 comuna: '',
                 correo: '',
                 observacion: '',
+                productos: [],
                 detalle_documento: [],
                 cotizaciones: [],
                 empresas: [],
@@ -467,6 +475,31 @@
             }
         },
         methods : {
+            listarProductos(){
+                let me=this;
+                var url= '/productos';
+                axios.get(url).then(function (response) {
+                    var respuesta= response.data;
+                    me.productos = respuesta.productos;
+                })
+                .catch(function (error) {
+                    console.log(error.response.data);
+                });
+            },
+            productoSeleccionado(e, fila){
+                let me = this;
+
+                var p = me.productos.find(function(d) {
+                    return d.id == e.id;
+                });
+
+                if(p){
+                    me.detalle[fila] = p.nombre
+                    me.valor[fila] = p.precio_normal
+                }
+                
+                //this.$refs.typeahead.inputValue = "";
+            },
             empresaSeleccionada(){
                 let me = this;
 
