@@ -76,7 +76,7 @@
                                             <!-- Main table element -->
                                             <b-table class="table table-hover table-striped"
                                             show-empty
-                                            responsive="md" 
+                                            responsive="md"
                                             :items="perfiles"
                                             :fields="fields"
                                             :current-page="currentPage"
@@ -111,7 +111,7 @@
                                             </b-row>
                                         </b-container>
                                     </div>
-                                    
+
                                 </template>
                             </div>
                         </div>
@@ -311,6 +311,12 @@
                                             <input type="checkbox" class="custom-control-input" id="m_pendientes" v-model="m_pendientes">
                                             <label class="custom-control-label" for="m_pendientes">Pendientes</label>
                                         </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="m_desglose_ventas" v-model="m_desglose_ventas">
+                                            <label class="custom-control-label" for="m_desglose_ventas">Desgloce</label>
+                                        </div>
+
+
                                     </div>
                                     <div class="col-sm-4">
                                         <div class="col-md-12">
@@ -413,7 +419,8 @@
                 m_cotizaciones: 0,
                 m_ordenes_compra: 0,
                 por_categoria: 0,
-                m_dashboard_especifico: 0
+                m_dashboard_especifico: 0,
+                m_desglose_ventas: 0
             }
         },
         computed:{
@@ -448,7 +455,7 @@
                 if (this.validarPerfil()){
                     return;
                 }
-                
+
                 let me = this;
 
                 axios.post('/perfil/registrar',{
@@ -479,7 +486,8 @@
                     'm_cotizaciones': this.m_cotizaciones,
                     'm_ordenes_compra': this.m_ordenes_compra,
                     'por_categoria': this.por_categoria,
-                    'm_dashboard_especifico': this.m_dashboard_especifico
+                    'm_dashboard_especifico': this.m_dashboard_especifico,
+                    'm_desglose_ventas': this.m_desglose_ventas
                 }).then(function (response) {
                     me.cerrarModal();
                     me.listarPerfiles();
@@ -494,7 +502,7 @@
                 if (this.validarPerfil()){
                     return;
                 }
-                
+
                 let me = this;
 
                 axios.post('/perfil/actualizar',{
@@ -526,14 +534,15 @@
                     'm_ordenes_compra': this.m_ordenes_compra,
                     'perfil_id': this.perfil_id,
                     'por_categoria': this.por_categoria,
-                    'm_dashboard_especifico': this.m_dashboard_especifico
+                    'm_dashboard_especifico': this.m_dashboard_especifico,
+                    'm_desglose_ventas': this.m_desglose_ventas
                 }).then(function (response) {
                     me.cerrarModal();
                     me.listarPerfiles();
                     me.statusPerfil(2);
                 }).catch(function (error) {
                     console.log(error.response.data);
-                }); 
+                });
             },
             eliminarPerfil(id){
                swal({
@@ -567,9 +576,9 @@
                 } else if (
                     result.dismiss === swal.DismissReason.cancel
                 ) {
-                    
+
                 }
-                }) 
+                })
             },
             validarPerfil(){
                 this.errorPerfil=0;
@@ -627,6 +636,7 @@
                 this.errorPerfil = 0;
                 this.por_categoria = 0;
                 this.m_dashboard_especifico = 0;
+                this.m_desglose_ventas = 0;
             },
             abrirModal(modelo, accion, data = []){
                 switch(modelo){
@@ -634,7 +644,7 @@
                     {
                         switch(accion){
                             case 'registrar':
-                            { 
+                            {
                                 this.modal = 1;
                                 this.tituloModal = 'Registrar perfil';
                                 this.nombre = '';
@@ -665,6 +675,7 @@
                                 this.m_ordenes_compra = 0;
                                 this.por_categoria = 0;
                                 this.m_dashboard_especifico = 0;
+                                this.m_desglose_ventas = 0;
                                 this.tipoAccion = 1;
                                 break;
                             }
@@ -701,6 +712,7 @@
                                 this.m_ordenes_compra = data['m_ordenes_compra'];
                                 this.por_categoria = data['por_categoria'];
                                 this.m_dashboard_especifico = data['m_dashboard_especifico'];
+                                this.m_desglose_ventas = data['m_desglose_ventas'];
                                 this.perfil_id = data['id'];
                                 break;
                             }
@@ -715,7 +727,7 @@
     }
 </script>
 
-<style>    
+<style>
     .modal-content{
         width: 100% !important;
         position: absolute !important;

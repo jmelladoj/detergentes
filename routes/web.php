@@ -14,7 +14,7 @@
 Route::get('/', function () {
     return view('auth.login');
 });
- 
+
 
 Auth::routes();
 
@@ -26,7 +26,7 @@ Route::middleware(['auth'])->group(function () {
         $exitCode = Artisan::call('config:cache');
         return 'DONE'; //Return anything
     });
-    
+
     Route::get('/home', 'HomeController@index')->name('home');
 
     //Rutas de sucursales
@@ -34,7 +34,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/sucursal/registrar', 'SucursalController@guardarSucursal');
     Route::post('/sucursal/actualizar', 'SucursalController@actualizarSucursal');
     Route::post('/sucursal/eliminar', 'SucursalController@eliminarSucursal');
-  
+
     //Rutas de perfiles
     Route::get('/perfiles', 'PerfilController@index');
     Route::post('/perfil/registrar', 'PerfilController@guardar');
@@ -61,7 +61,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/subCategoria/eliminar', 'SubCategoriaController@eliminarSubCategoria');
     Route::post('/subCategoria/restaurar', 'SubCategoriaController@restaurarSubCategoria');
     Route::get('/subcategorias/ventas/{inicio}/{termino}', 'SubCategoriaController@informeVentas');
-    
+
 
     //Rutas de categorías
     Route::get('/productos', 'ProductoController@index');
@@ -84,7 +84,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/categoriasClientes/registrar', 'CategoriaClienteController@guardarCategoriaCliente');
     Route::post('/categoriasClientes/actualizar', 'CategoriaClienteController@actualizarCategoriaCliente');
     Route::post('/categoriasClientes/eliminar', 'CategoriaClienteController@eliminarCategoriaCliente');
-    
+
 
     //Rutas de empresas
     Route::get('/empresas', 'EmpresaController@index');
@@ -124,8 +124,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/venta/entrega', 'VentaController@entregar');
     Route::get('/ventas/detalle/{id}/{inicio}/{termino}', 'VentaController@indexDetalle');
     Route::get('/ventas/detalle/productos/{id}/{inicio}/{termino}', 'VentaController@indexDetalleProductos');
-    
-    
+
+    //Rutas de desgloce
+    Route::get('/desgloce/ventas', 'DesgloceVentaController@index');
 
     //Rutas de resumen
     Route::get('/resumen', 'HomeController@resumen');

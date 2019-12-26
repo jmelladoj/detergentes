@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DesgloceVenta;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +18,7 @@ class VentaController extends Controller
     //
     public function index(Request $request, $inicio, $termino){
         if (!$request->ajax()) return redirect('/');
-        
+
         $ventas = Venta::whereBetween('fecha', [$inicio, $termino])->where('estado', 2)->orderBy('id', 'DESC')->get();
 
         return [
@@ -88,7 +89,7 @@ class VentaController extends Controller
 
     public function pendientes(Request $request){
         if (!$request->ajax()) return redirect('/');
-        
+
         $ventas = Venta::where('estado', 1)->orderBy('id', 'DESC')->with('detalle')->get();
 
         return [
@@ -117,15 +118,27 @@ class VentaController extends Controller
             $venta->observacion  = $request->observacion;
             $venta->estado = $sucursal->stock_automatico == 1 ? 2 : 1;
             $venta->save();
-            
-            foreach ($request->detalle_venta AS $item) {               
+
+            foreach ($request->detalle_venta AS $item) {
+                $stock = 0;
+
                 $stockSucursal = StockSucursal::where('sucursal_id', $request->sucursal_id)->where('producto_id', $item['producto_id'])->first();
                 $stockSucursal->stock -= $item['cantidad'];
                 $stockSucursal->save();
-                
+
                 $producto = Producto::find($item['producto_id']);
+                $stock = $producto->stock;
                 $producto->stock -= $item['cantidad'];
                 $producto->save();
+
+                DesgloceVenta::create([
+                    'cantidad_venta' => $item['cantidad'],
+                    'stock_nuevo' => $stock - $item['cantidad'],
+                    'stock_antiguo' => $stock,
+                    'venta_id' => $venta->id,
+                    'producto_id' => $item['producto_id'],
+                    'sucursal_id' => $request->sucursal_id
+                ]);
 
                 DetalleVenta::create(['venta_id' => $venta->id, 'producto_id' => $item['producto_id'], 'cantidad' => $item['cantidad']]);
             }

@@ -40,6 +40,7 @@ Vue.component('perfiles', require('./components/Perfil.vue').default);
 Vue.component('ventas-categoria', require('./components/PorCategoria.vue').default);
 Vue.component('dashboard-especifico', require('./components/DashboardEspecifico.vue').default);
 Vue.component('filtro-fechas', require('./components/FiltroFechas.vue').default);
+Vue.component('desgloce-ventas', require('./components/DesgloceVentas.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
