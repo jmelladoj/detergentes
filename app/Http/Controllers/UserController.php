@@ -10,7 +10,7 @@ class UserController extends Controller
     //
     public function index(Request $request){
         if (!$request->ajax()) return redirect('/');
-        
+
         $usuarios = User::orderBy('name', 'asc')->get();
 
         return [
@@ -40,20 +40,24 @@ class UserController extends Controller
         $usuario->email = $request->correo;
 
 
-        if($request->password != null || $request->password != '') {
+        if($request->clave != null || $request->clave != '') {
             $usuario->password = bcrypt($request->clave);
         }
 
+        if($request->sucursal_id != null){
+            $usuario->sucursal_id = $request->sucursal_id;
+        }
+
         $usuario->perfil_id = $request->perfil_id;
-        $usuario->sucursal_id = $request->sucursal_id;
+
         $usuario->save();
     }
 
     public function eliminarUsuario(Request $request){
         if (!$request->ajax()) return redirect('/');
-        
+
         $usuario = User::findOrFail($request->id);
-        $usuario->delete(); 
+        $usuario->delete();
     }
 
 }

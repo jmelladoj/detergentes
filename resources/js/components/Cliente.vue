@@ -87,7 +87,7 @@
                                             :sort-direction="sortDirection"
                                             @filtered="onFiltered"
                                             >
-                                            <template slot="acciones" slot-scope="row">
+                                            <template v-slot:cell(acciones)="row">
                                                 <b-button size="xs" v-b-tooltip.hover title="Asignar productos a lista de cliente" @click="abrirModalLista(row.item)" class="btn btn-success">
                                                     <i class="fa fa-plus"></i>
                                                 </b-button>

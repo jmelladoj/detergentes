@@ -87,7 +87,7 @@
                                             :sort-direction="sortDirection"
                                             @filtered="onFiltered"
                                             >
-                                            <template slot="acciones" slot-scope="row">
+                                            <template v-slot:cell(acciones)="row">
                                                 <b-button size="xs" v-b-tooltip.hover title="Editar información de sucursal" @click="abrirModal('sucursal','actualizar',row.item)" class="btn btn-warning">
                                                     <i class="icon-pencil"></i>
                                                 </b-button>

@@ -96,7 +96,7 @@
                                                 </ul>
                                             </template>
 
-                                            <template slot="acciones" slot-scope="row">
+                                            <template v-slot:cell(acciones)="row">
                                                 <b-button size="xs" v-b-tooltip.hover title="Confirmar entrega de pedido" @click="cambiarEstado(row.item.id)" class="btn btn-success">
                                                     <i class="fa fa-check"></i>
                                                 </b-button>

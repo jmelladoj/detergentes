@@ -87,7 +87,7 @@
                                             :sort-direction="sortDirection"
                                             @filtered="onFiltered"
                                             >
-                                            <template slot="acciones" slot-scope="row">
+                                            <template v-slot:cell(acciones)="row">
 
                                                 <template slot="precio_costo" slot-scope="row">
                                                     $ {{ row.item.precio_costo.toLocaleString() }}

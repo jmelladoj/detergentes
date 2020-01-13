@@ -76,7 +76,7 @@
                                             <!-- Main table element -->
                                             <b-table class="table table-hover table-striped"
                                             show-empty
-                                            responsive="md" 
+                                            responsive="md"
                                             :items="usuarios"
                                             :fields="fields"
                                             :current-page="currentPage"
@@ -87,7 +87,7 @@
                                             :sort-direction="sortDirection"
                                             @filtered="onFiltered"
                                             >
-                                            <template slot="acciones" slot-scope="row">
+                                            <template v-slot:cell(acciones)="row">
                                                 <b-button size="xs" v-b-tooltip.hover title="Editar informción de usuario" @click="abrirModal('usuario','actualizar',row.item)" class="btn btn-warning">
                                                     <i class="icon-pencil"></i>
                                                 </b-button>
@@ -111,7 +111,7 @@
                                             </b-row>
                                         </b-container>
                                     </div>
-                                    
+
                                 </template>
                             </div>
                         </div>
@@ -175,7 +175,7 @@
                                         <div class="form-group">
                                             <label> Sucursal de usuario </label>
                                             <select class="form-control p-0" v-model="sucursal_id">
-                                                <option value="0">Selecciona una sucursal</option>
+                                                <option :value="0">Selecciona una sucursal</option>
                                                 <option v-for="sucursal in sucursales" :key="sucursal.id" :value="sucursal.id" v-text="sucursal.nombre"></option>
                                             </select>
                                         </div>
@@ -296,7 +296,7 @@
                 if (this.validarUsuario()){
                     return;
                 }
-                
+
                 let me = this;
 
                 axios.post('/usuario/registrar',{
@@ -319,7 +319,7 @@
                 if (this.validarUsuario()){
                     return;
                 }
-                
+
                 let me = this;
 
                 axios.post('/usuario/actualizar',{
@@ -335,7 +335,7 @@
                     me.statusUsuario(2);
                 }).catch(function (error) {
                     console.log(error.response.data);
-                }); 
+                });
             },
             eliminarUsuario(id){
                swal({
@@ -369,9 +369,9 @@
                 } else if (
                     result.dismiss === swal.DismissReason.cancel
                 ) {
-                    
+
                 }
-                }) 
+                })
             },
             validarUsuario(){
                 this.errorUsuario=0;
@@ -382,7 +382,6 @@
                 if (!this.correo.includes('.') || !this.correo.includes('@')) this.errores.push("Debes ingresar un correo valido");
                 if (!this.clave && this.tipoAccion == 1) this.errores.push("Se debe de ingresar una clave.");
                 if (this.perfil_id <= 0) this.errores.push("Se debe de ingresar un perfil al usuario.");
-                if (this.sucursal_id <= 0) this.errores.push("Se debe de ingresar un sucursal al usuario.");
                 if (this.errores.length) this.errorUsuario = 1;
 
                 return this.errorUsuario;
@@ -418,7 +417,7 @@
                     {
                         switch(accion){
                             case 'registrar':
-                            { 
+                            {
                                 this.modal = 1;
                                 this.tituloModal = 'Registrar Usuario';
                                 this.nombre = '';
@@ -436,11 +435,7 @@
                                 this.nombre = data['name'];
                                 this.correo = data['email'];
                                 this.perfil_id = data['perfil_id'];
-
-                                if(data['sucursal_id'] == '' || data['sucursal_id'] == null){
-                                    data['sucursal_id'] = "NULL";
-                                    this.sucursal_id = data['sucursal_id'];
-                                }
+                                this.sucursal_id = data['sucursal_id'];
 
                                 this.usuario_id = data['id'];
                                 break;
@@ -458,7 +453,7 @@
     }
 </script>
 
-<style>    
+<style>
     .modal-content{
         width: 100% !important;
         position: absolute !important;

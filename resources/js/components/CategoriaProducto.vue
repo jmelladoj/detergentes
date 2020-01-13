@@ -88,7 +88,7 @@
                                             @filtered="onFiltered"
                                             >
 
-                                            <template slot="acciones" slot-scope="row">
+                                            <template v-slot:cell(acciones)="row">
 
                                                 <b-button size="xs" v-b-tooltip.hover title="Agregar subcategorías" class="btn btn-success" @click="agregarSubCategorias(row.item)">
                                                     <i class="icon-plus"></i>

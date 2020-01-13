@@ -83,9 +83,6 @@
                                             @filtered="onFiltered"
                                             >
 
-                                            <template slot="producto" slot-scope="row">
-                                                {{ row.item.producto.nombre }}
-                                            </template>
 
                                             <template slot="cantidad_venta" slot-scope="row">
                                                 Se han vendido <b>{{ row.item.cantidad_venta }}</b>
@@ -137,7 +134,7 @@
                 items: items,
                 fields: [
                     { key: 'id', label: '#', sortable: true, sortDirection: 'desc', class: 'text-center' },
-                    { key: 'producto', label: 'PRODUCTO', sortable: true, class: 'text-left' },
+                    { key: 'productoNombre', label: 'PRODUCTO', sortable: true, class: 'text-left' },
                     { key: 'cantidad_venta', label: 'STOCK VENDIDO', sortable: true, class: 'text-left' },
                     { key: 'stock_nuevo', label: 'STOCK ACTUAL', sortable: true, class: 'text-left' },
                     { key: 'stock_antiguo', label: 'STOCK ANTIGUO', sortable: true, class: 'text-left' },

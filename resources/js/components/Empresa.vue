@@ -99,7 +99,7 @@
                                                 <label for="" v-if="row.item.empresa == 0 && row.item.proveedor == 0"> EN PROCESO</label>
                                             </template>
 
-                                            <template slot="acciones" slot-scope="row">
+                                            <template v-slot:cell(acciones)="row">
                                                 <b-button size="xs" v-b-tooltip.hover title="Editar información de empresa" @click="abrirModal('empresa','actualizar',row.item)" class="btn btn-warning">
                                                     <i class="icon-pencil"></i>
                                                 </b-button>

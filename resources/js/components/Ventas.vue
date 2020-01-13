@@ -92,7 +92,7 @@
                                             @filtered="onFiltered"
                                             >
 
-                                            <template slot="acciones" slot-scope="row">
+                                            <template v-slot:cell(acciones)="row">
                                                 <!--<b-button size="xs" v-b-tooltip.hover title="Ver Detalle de Venta" @click="verDetalle(row.item)" class="btn btn-success">
                                                     <i class="fa fa-plus"></i>
                                                 </b-button>-->
