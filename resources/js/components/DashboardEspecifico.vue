@@ -29,7 +29,7 @@
                 <div class="col-lg-12 col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <div class="form-group row">                           
+                            <div class="form-group row">
                                 <label for="" class="col-md-2 col-form-label">SUCURSAL</label>
                                 <div class="col-md-10">
                                     <select class="form-control" v-model="sucursal.id" @change="actualizarSucursal()">
@@ -134,7 +134,7 @@
                                             <!-- Main table element -->
                                             <b-table class="table table-hover table-striped"
                                             show-empty
-                                            responsive="md" 
+                                            responsive="md"
                                             :items="ventas"
                                             :fields="fields"
                                             :current-page="currentPage"
@@ -146,7 +146,8 @@
                                             @filtered="onFiltered"
                                             >
 
-                                            <template slot="venta" slot-scope="row">
+
+                                            <template v-slot:cell(venta)="row">
                                                 <p>
                                                     Subtotal : ${{ row.item.subtotal }} <br>
                                                     Descuento: ${{ row.item.descuento }} <br>
@@ -154,7 +155,7 @@
                                                 </p>
                                             </template>
 
-                                            <template slot="detalle" slot-scope="row">
+                                            <template v-slot:cell(detalle_venta)="row">
                                                 <label for="" v-for="(pago, index) in row.item.pago" :key="index">
                                                     <p v-if="pago.medio_pago == 1"> EFECTIVO -  {{ pago.numero_documento }}</p>
                                                     <p v-if="pago.medio_pago == 2"> TARJETA CRÉDITO -  {{ pago.numero_documento }}</p>
@@ -164,7 +165,7 @@
                                                 </label>
                                             </template>
 
-                                            <template slot="detalle_venta" slot-scope="row">
+                                            <template v-slot:cell(detalle)="row">
                                                 <ul>
                                                     <li v-for="(item, index) in row.item.detalle" :key="index" v-text="obtenerNombre(item.producto_id) + ' X ' + item.cantidad"></li>
                                                 </ul>
@@ -184,7 +185,7 @@
                                             </b-row>
                                         </b-container>
                                     </div>
-                                    
+
                                 </template>
                             </div>
                         </div>
@@ -199,7 +200,7 @@
 
 <script>
     import BootstrapVue from 'bootstrap-vue'
-    
+
     Vue.use(BootstrapVue)
 
     const items = [
@@ -233,6 +234,7 @@
                     { key: 'venta', label: 'VENTA', sortable: true, class: 'text-left' },
                     { key: 'detalle', label: 'DETALLE VENTA', sortable: true, class: 'text-left' },
                     { key: 'detalle_venta', label: 'DETALLE VENTA', sortable: true, class: 'text-left' },
+
                 ],
                 currentPage: 1,
                 perPage: 10,
@@ -301,8 +303,7 @@
                 let me=this;
                 var url= '/ventas/detalle/productos/'  + me.sucursal.id + '/' + me.inicio + '/' + me.termino ;
                 axios.get(url).then(function (response) {
-                    var respuesta= response.data;
-                    me.ventas = respuesta.ventas;
+                    me.ventas = response.data.ventas;
                     me.totalRows = me.ventas.length;
                 })
                 .catch(function (error) {
