@@ -11,7 +11,30 @@
                             <li class="breadcrumb-item"><a href="javascript:void(0)">Inicio</a></li>
                             <li class="breadcrumb-item active">Stock</li>
                         </ol>
-                        <button type="button" v-b-tooltip.hover title="Descargar inventario en formato excel" @click="exportar()" class="btn btn-info d-none d-lg-block m-l-15"><i class="fa fa-plus-circle"></i> Descargar inventario</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-group row">
+                                    <label for="" class="col-md-3">Ver informe de : </label>
+                                    <div class="col-md-6">
+                                        <select class="form-control" v-model="sucursal_id">
+                                            <option value="0">Todas las sucursales</option>
+                                            <option v-for="sucursal in sucursales" :key="sucursal.id" :value="sucursal.id" v-text="sucursal.nombre"></option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <button type="button" v-b-tooltip.hover title="Descargar inventario en formato excel" @click="exportar()" class="btn btn-info d-none d-lg-block m-l-15"><i class="fa fa-plus-circle"></i> Descargar inventario</button>
+                                    </div>
+
+
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -71,7 +94,7 @@
                                             <!-- Main table element -->
                                             <b-table class="table table-hover table-striped"
                                             show-empty
-                                            responsive="md" 
+                                            responsive="md"
                                             :items="productos"
                                             :fields="fields"
                                             :current-page="currentPage"
@@ -83,7 +106,7 @@
                                             @filtered="onFiltered"
                                             >
 
-                                            <template slot="cantidad" slot-scope="row">
+                                            <template v-slot:cell(cantidad)="row">
                                                 <div class="col-12" v-for="sucursal in sucursales" :key="sucursal.id"  v-text="sucursal.nombre + ' : ' + obtenerStock(row.item.id, sucursal.id) "></div>
                                             </template>
 
@@ -101,7 +124,7 @@
                                             </b-row>
                                         </b-container>
                                     </div>
-                                    
+
                                 </template>
                             </div>
                         </div>
@@ -127,6 +150,7 @@ import { log } from 'util';
                 productos : [],
                 sucursales : [],
                 stock : [],
+                sucursal_id: 0,
                 items: items,
                 fields: [
                     { key: 'id', label: 'NUM', sortable: true, sortDirection: 'desc', class: 'text-center align-middle' },
@@ -196,40 +220,55 @@ import { log } from 'util';
             },
             obtenerStock(id_producto, id_sucursal){
                 let me = this;
-                
+
                 var producto = new Object();
+
                 producto = me.stock.find(function(p) {
                     return p.producto_id == id_producto && p.sucursal_id == id_sucursal;
                 });
 
-                var cantidad =  producto != 'undefined' ? producto.stock : 0;
+                if(producto){
+                    var cantidad =  producto != 'undefined' ? producto.stock : 0;
+                }
 
                 return cantidad;
-                
+
             },
             exportar(){
                 let me = this;
                 let informe = [];
-                
+
                 me.productos.forEach(function(p) {
                     me.sucursales.forEach(function(s) {
                         var fila = new Object();
-                        
-                        fila.NUM = p.id;
-                        fila.NOMBRE = p.nombre.toUpperCase();
-                        fila.TOTAL = p.stock;
-                        fila.SUCURSALES = s.nombre.toUpperCase();
-                        fila.STOCK = me.obtenerStock(p.id, s.id);
+
+                        if(me.sucursal_id == 0){
+                            fila.NUM = p.id;
+                            fila.NOMBRE = p.nombre.toUpperCase();
+                            fila.TOTAL = p.stock;
+                            fila.SUCURSALES = s.nombre.toUpperCase();
+                            fila.STOCK = me.obtenerStock(p.id, s.id);
+                        } else {
+                            if(s.id == me.sucursal_id){
+                                fila.NUM = p.id;
+                                fila.NOMBRE = p.nombre.toUpperCase();
+                                fila.TOTAL = p.stock;
+                                fila.SUCURSALES = s.nombre.toUpperCase();
+                                fila.STOCK = me.obtenerStock(p.id, s.id);
+                            }
+                        }
 
                         informe.push(fila);
                     });
                 });
-                
+
                 let data = XLSX.utils.json_to_sheet(informe)
                 const workbook = XLSX.utils.book_new()
                 const filename = 'Inventario'
                 XLSX.utils.book_append_sheet(workbook, data, filename)
                 XLSX.writeFile(workbook, `${filename}.xlsx`)
+
+                this.sucursal_id = 0
             }
         },
         mounted() {
@@ -240,7 +279,7 @@ import { log } from 'util';
     }
 </script>
 
-<style>    
+<style>
     .modal-content{
         width: 100% !important;
         position: absolute !important;
