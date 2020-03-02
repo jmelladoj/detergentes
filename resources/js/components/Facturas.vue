@@ -3,13 +3,13 @@
         <div class="container-fluid">
             <div class="row page-titles">
                 <div class="col-md-5 align-self-center">
-                    <h4 class="text-themecolor">Ventas</h4>
+                    <h4 class="text-themecolor">Ventas con factura</h4>
                 </div>
                 <div class="col-md-7 align-self-center text-right">
                     <div class="d-flex justify-content-end align-items-center">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="javascript:void(0)">Inicio</a></li>
-                            <li class="breadcrumb-item active">Ventas</li>
+                            <li class="breadcrumb-item active">Ventas Ventas con factura</li>
                         </ol>
                     </div>
                 </div>
@@ -187,7 +187,7 @@
             },
             listarVentas(){
                 let me=this;
-                var url= '/ventas/' + me.inicio + '/' + me.termino ;;
+                var url= '/ventas/facturas/' + me.inicio + '/' + me.termino ;;
                 axios.get(url).then(function (response) {
                     var respuesta= response.data;
                     me.ventas = respuesta.ventas;

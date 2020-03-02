@@ -119,11 +119,14 @@ Route::middleware(['auth'])->group(function () {
 
     //Rutas de ventas
     Route::get('/ventas/{inicio}/{termino}', 'VentaController@index');
+    Route::get('/ventas/facturas/{inicio}/{termino}', 'VentaController@index_facturas');
     Route::post('/venta/registrar', 'VentaController@registrarVenta');
     Route::get('/ventas/pendientes', 'VentaController@pendientes');
     Route::post('/venta/entrega', 'VentaController@entregar');
     Route::get('/ventas/detalle/{id}/{inicio}/{termino}', 'VentaController@indexDetalle');
     Route::get('/ventas/detalle/productos/{id}/{inicio}/{termino}', 'VentaController@indexDetalleProductos');
+    Route::post('/venta/anular', 'VentaController@anular_venta');
+
 
     //Rutas de desgloce
     Route::get('/desgloce/ventas', 'DesgloceVentaController@index');

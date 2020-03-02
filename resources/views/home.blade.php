@@ -95,6 +95,7 @@
                                     @if(Auth::user()->perfil->m_sin_Stock)<li @click="menu=8"><a href="javascript:void(0)"> SIN STOCK</a></li>@endif
                                     @if(Auth::user()->perfil->m_stock)<li @click="menu=9"><a href="javascript:void(0)"> STOCK</a></li>@endif
                                     @if(Auth::user()->perfil->por_categoria)<li @click="menu=18"><a href="javascript:void(0)"> VENTAS CATEGORÍA</a></li>@endif
+                                    <li @click="menu=21"><a href="javascript:void(0)"> FACTURAS</a></li>
                                 </ul>
                             </li>
 
@@ -241,6 +242,9 @@
                 </template>
             @endif
 
+            <template v-if="menu==21">
+                <detalle-ventas-factura></detalle-ventas-factura>
+            </template>
 
 
             <br>

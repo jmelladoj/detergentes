@@ -1,16 +1,16 @@
-@if(Auth::user()->perfil->m_dashboard)    
-    <template v-if="menu==0">  
+@if(Auth::user()->perfil->m_dashboard)
+    <template v-if="menu==0">
         <dashboard></dashboard>
     </template>
 @endif
 
 @if(Auth::user()->perfil->m_sucursales)
-    <template v-if="menu==1"> 
+    <template v-if="menu==1">
         <sucursal></sucursal>
     </template>
 @endif
 
-@if(Auth::user()->perfil->m_usuarios)    
+@if(Auth::user()->perfil->m_usuarios)
     <template v-if="menu==2">
         <usuario></usuario>
     </template>
@@ -99,3 +99,6 @@
         <perfiles></perfiles>
     </template>
 @endif
+<template v-if="menu==18">
+    <detalle-ventas-factura></detalle-ventas-factura>
+</template>

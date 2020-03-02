@@ -26,6 +26,16 @@ class VentaController extends Controller
         ];
     }
 
+    public function index_facturas(Request $request, $inicio, $termino){
+        if (!$request->ajax()) return redirect('/');
+
+        $ventas = Venta::where('tipo_documento', 2)->whereBetween('fecha', [$inicio, $termino])->where('estado', 2)->orderBy('id', 'DESC')->get();
+
+        return [
+            'ventas' => $ventas
+        ];
+    }
+
 
     public function indexDetalleProductos (Request $request, $id, $inicio, $termino){
         if (!$request->ajax()) return redirect('/');
@@ -157,5 +167,9 @@ class VentaController extends Controller
         $venta = Venta::find($request->id);
         $venta->estado = 2;
         $venta->save();
+    }
+
+    public function anular_venta(Request $request){
+
     }
 }

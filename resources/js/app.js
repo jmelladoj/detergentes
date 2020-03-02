@@ -41,6 +41,7 @@ Vue.component('ventas-categoria', require('./components/PorCategoria.vue').defau
 Vue.component('dashboard-especifico', require('./components/DashboardEspecifico.vue').default);
 Vue.component('filtro-fechas', require('./components/FiltroFechas.vue').default);
 Vue.component('desgloce-ventas', require('./components/DesgloceVentas.vue').default);
+Vue.component('detalle-ventas-factura', require('./components/Facturas.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
