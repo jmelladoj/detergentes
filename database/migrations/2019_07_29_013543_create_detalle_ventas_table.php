@@ -25,6 +25,7 @@ class CreateDetalleVentasTable extends Migration
             $table->integer('cantidad');
             $table->integer('estado')->default(1);
 
+            $table->softDeletes();
             $table->timestamps();
         });
     }

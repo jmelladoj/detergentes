@@ -22,6 +22,8 @@ class CreateDetallePagosTable extends Migration
             $table->integer('monto_pago');
             $table->integer('medio_pago');
             $table->integer('numero_documento');
+
+            $table->softDeletes();
             $table->timestamps();
         });
     }

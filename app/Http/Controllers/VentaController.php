@@ -170,6 +170,34 @@ class VentaController extends Controller
     }
 
     public function anular_venta(Request $request){
+        $venta = Venta::find($request->id);
+        $detalle = DetalleVenta::where('venta_id', $venta->id)->get();
+        $pagos = DetallePago::where('venta_id', $venta->id)->get();
 
+        foreach ($detalle AS $item) {
+            $stock = 0;
+
+            $stockSucursal = StockSucursal::where('sucursal_id', $venta->sucursal_id)->where('producto_id', $item->producto_id)->first();
+            $stockSucursal->stock += $item->cantidad;
+            $stockSucursal->save();
+
+            $producto = Producto::find($item->producto_id);
+            $stock = $producto->stock;
+            $producto->stock += $item->cantidad;
+            $producto->save();
+
+            DesgloceVenta::create([
+                'cantidad_venta' => $item['cantidad'],
+                'stock_nuevo' => $stock + $item['cantidad'],
+                'stock_antiguo' => $stock,
+                'venta_id' => $venta->id,
+                'producto_id' =>  $item->producto_id,
+                'sucursal_id' => $venta->sucursal_id
+            ]);
+        }
+
+        DetalleVenta::where('venta_id', $venta->id)->delete();
+        DetallePago::where('venta_id', $venta->id)->delete();
+        $venta->delete();
     }
 }

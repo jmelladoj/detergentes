@@ -217,10 +217,10 @@
                     axios.post('/venta/anular',{
                         'id': id
                     }).then(function (response) {
-                        me.listarEmpresas();
+                        me.listarVentas();
                         swal(
-                        'Empresa eliminada!',
-                        'El registro ha sido eliminado con éxito.',
+                        'Venta anulada!',
+                        'El registro ha sido anulado con éxito.',
                         'success'
                         )
                     }).catch(function (error) {
@@ -237,7 +237,7 @@
                 axios.post('/ventas/detalle',{
                     'id': id
                 }).then(function (response) {
-                    me.listarEmpresas();
+                    me.listarVentas();
                     swal(
                     'Empresa eliminada!',
                     'El registro ha sido eliminado con éxito.',
